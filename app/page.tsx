@@ -14,7 +14,7 @@ interface UserData {
 }
 
 // List of admins based on their username
-const admins = ['borhane_username', 'shaib_username']; // استبدل بأسماء المستخدمين الفعلية
+const admins = ['Kahrwaydo', 'shaib_username']; // استبدل بأسماء المستخدمين الفعلية
 
 export default function Home() {
   const [userData, setUserData] = useState<UserData | null>(null)
