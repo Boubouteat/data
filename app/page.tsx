@@ -14,19 +14,22 @@ interface UserData {
 }
 
 // List of admins based on their username
-const admins = ['Kahrwaydo', 'shaib_username']; // استبدل بأسماء المستخدمين الفعلية
+const admins = ['Kharwaydo', 'borhane_username', 'shaib_username']; // تأكد من إضافة اسم المستخدم الفعلي هنا
 
 export default function Home() {
   const [userData, setUserData] = useState<UserData | null>(null)
 
   useEffect(() => {
     if (WebApp.initDataUnsafe.user) {
-      setUserData(WebApp.initDataUnsafe.user as UserData)
+      console.log('User data loaded:', WebApp.initDataUnsafe.user); // سجل بيانات المستخدم
+      setUserData(WebApp.initDataUnsafe.user as UserData);
     }
   }, [])
 
   // Check if the user is an admin based on username
   const isAdmin = userData && admins.includes(userData.username || '');
+
+  console.log('Is Admin:', isAdmin); // سجل ما إذا كان المستخدم مشرفًا
 
   return (
     <main className="p-4 bg-gray-900 min-h-screen">
