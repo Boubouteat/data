@@ -1,15 +1,80 @@
-body {
-  background-color: #1a202c;
+.flex {
   display: flex;
-  justify-content: center;
   align-items: center;
-  min-height: 100vh;
-  margin: 0;
 }
 
-h1 {
-  color: white;
-  font-size: 36px;
-  font-weight: bold;
+.space-x-4 {
+  gap: 1rem;
 }
 
+.absolute {
+  position: absolute;
+}
+
+.top-4 {
+  top: 1rem;
+}
+
+.left-4 {
+  left: 1rem;
+}
+
+.bg-black {
+  background-color: black;
+}
+
+.rounded-lg {
+  border-radius: 0.5rem;
+}
+
+.p-4 {
+  padding: 1rem;
+}
+
+.shadow-xl {
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+.border {
+  border-width: 1px;
+}
+
+.border-gray-700 {
+  border-color: #374151;
+}
+
+.w-16 {
+  width: 4rem;
+}
+
+.h-16 {
+  height: 4rem;
+}
+
+.rounded-full {
+  border-radius: 9999px;
+}
+
+.border-green-500 {
+  border-color: #10b981;
+}
+
+.shadow-lg {
+  box-shadow: 0 10px 15px rgba(0, 0, 0, 0.15);
+}
+
+.text-green-500 {
+  color: #10b981;
+}
+
+.text-white {
+  color: #fff;
+}
+
+.text-2xl {
+  font-size: 1.5rem;
+}
+
+.font-bold {
+  font-weight: 700;
+}
