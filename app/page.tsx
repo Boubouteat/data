@@ -23,21 +23,17 @@ export default function Home() {
   }, [])
 
   return (
-    <main className="p-4">
+    <main className="p-4 flex justify-center items-center min-h-screen bg-gray-900">
       {userData ? (
         <>
-          <h1 className="text-2xl font-bold mb-4">User Data</h1>
-          <ul>
-            <li>ID: {userData.id}</li>
-            <li>First Name: {userData.first_name}</li>
-            <li>Last Name: {userData.last_name || 'N/A'}</li>
-            <li>Username: {userData.username || 'N/A'}</li>
-            <li>Language Code: {userData.language_code}</li>
-            <li>Is Premium: {userData.is_premium ? 'Yes' : 'No'}</li>
-          </ul>
+          <div className="text-white text-center">
+            <h1 className="text-4xl font-bold">
+              {userData.first_name} {userData.last_name || ''}
+            </h1>
+          </div>
         </>
       ) : (
-        <div>Loading...</div>
+        <div className="text-white">Loading...</div>
       )}
     </main>
   )
