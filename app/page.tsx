@@ -36,7 +36,7 @@ export default function Home() {
       {userData ? (
         <div className="flex items-center space-x-4 absolute top-4 left-4 bg-black rounded-lg p-4 shadow-xl border border-gray-700">
           <img
-            src={isAdmin ? '/admin.png' : '/icon.png'} // استخدم admin.png إذا كان المستخدم مشرفًا، وإلا استخدم icon.png
+            src={isAdmin ? '/icon1.png' : '/icon.png'} // استخدم admin.png إذا كان المستخدم مشرفًا، وإلا استخدم icon.png
             alt="User Avatar"
             className="w-16 h-16 rounded-full border-2 border-green-500 shadow-lg"
           />
