@@ -7,20 +7,8 @@
   gap: 1rem;
 }
 
-.absolute {
-  position: absolute;
-}
-
-.top-4 {
-  top: 1rem;
-}
-
-.left-4 {
-  left: 1rem;
-}
-
 .bg-black {
-  background-color: #111; /* استخدام لون أكثر عمقًا */
+  background-color: #111; /* لون خلفية أعمق */
 }
 
 .rounded-lg {
@@ -33,14 +21,6 @@
 
 .shadow-xl {
   box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2); /* زيادة ظل العنصر */
-}
-
-.border {
-  border-width: 2px; /* زيادة سماكة الحدود */
-}
-
-.border-gray-700 {
-  border-color: #374151;
 }
 
 .w-16 {
@@ -56,7 +36,7 @@
 }
 
 .border-green-500 {
-  border-color: #10b981;
+  border-color: #10b981; /* لون الحدود */
 }
 
 .shadow-lg {
@@ -64,29 +44,29 @@
 }
 
 .text-green-500 {
-  color: #10b981;
+  color: #10b981; /* لون النص للأخضر */
 }
 
 .text-white {
-  color: #ffffff;
+  color: #ffffff; /* لون النص الأبيض */
 }
 
-.text-sm { /* تعديل حجم الخط للاسم */
+.text-sm {
   font-size: 0.875rem; /* حجم الخط صغير */
 }
 
-.text-xl { /* حجم خط أكبر للعناوين */
-  font-size: 1.25rem; /* حجم أكبر */
+.text-xl {
+  font-size: 1.25rem; /* حجم أكبر للعناوين */
 }
 
 .font-bold {
-  font-weight: 700;
+  font-weight: 700; /* خط عريض */
 }
 
-.hover\:shadow-lg:hover { /* تأثير عند التمرير على العنصر */
-  box-shadow: 0 15px 30px rgba(0, 0, 0, 0.25);
+.hover\:shadow-lg:hover {
+  box-shadow: 0 15px 30px rgba(0, 0, 0, 0.25); /* تأثير الظل عند التمرير */
 }
 
-.transition { /* تأثير الانتقال */
-  transition: all 0.3s ease;
+.transition {
+  transition: all 0.3s ease; /* تأثير الانتقال */
 }
