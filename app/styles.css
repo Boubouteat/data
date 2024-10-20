@@ -20,23 +20,23 @@
 }
 
 .bg-black {
-  background-color: black;
+  background-color: #111; /* استخدام لون أكثر عمقًا */
 }
 
 .rounded-lg {
-  border-radius: 0.5rem;
+  border-radius: 0.75rem; /* زيادة انحناء الزوايا */
 }
 
 .p-4 {
-  padding: 1rem;
+  padding: 1.5rem; /* زيادة الحشوة */
 }
 
 .shadow-xl {
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2); /* زيادة ظل العنصر */
 }
 
 .border {
-  border-width: 1px;
+  border-width: 2px; /* زيادة سماكة الحدود */
 }
 
 .border-gray-700 {
@@ -44,15 +44,15 @@
 }
 
 .w-16 {
-  width: 4rem;
+  width: 5rem; /* زيادة عرض الصورة */
 }
 
 .h-16 {
-  height: 4rem;
+  height: 5rem; /* زيادة ارتفاع الصورة */
 }
 
 .rounded-full {
-  border-radius: 9999px;
+  border-radius: 50%; /* جعل الصورة دائريًا */
 }
 
 .border-green-500 {
@@ -60,7 +60,7 @@
 }
 
 .shadow-lg {
-  box-shadow: 0 10px 15px rgba(0, 0, 0, 0.15);
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.15);
 }
 
 .text-green-500 {
@@ -68,13 +68,25 @@
 }
 
 .text-white {
-  color: #fff;
+  color: #ffffff;
 }
 
-.text-2xl {
-  font-size: 1rem;
+.text-sm { /* تعديل حجم الخط للاسم */
+  font-size: 0.875rem; /* حجم الخط صغير */
+}
+
+.text-xl { /* حجم خط أكبر للعناوين */
+  font-size: 1.25rem; /* حجم أكبر */
 }
 
 .font-bold {
   font-weight: 700;
+}
+
+.hover\:shadow-lg:hover { /* تأثير عند التمرير على العنصر */
+  box-shadow: 0 15px 30px rgba(0, 0, 0, 0.25);
+}
+
+.transition { /* تأثير الانتقال */
+  transition: all 0.3s ease;
 }
