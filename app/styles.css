@@ -7,66 +7,74 @@
   gap: 1rem;
 }
 
+.absolute {
+  position: absolute;
+}
+
+.top-4 {
+  top: 1rem;
+}
+
+.left-4 {
+  left: 1rem;
+}
+
 .bg-black {
-  background-color: #111; /* لون خلفية أعمق */
+  background-color: black;
 }
 
 .rounded-lg {
-  border-radius: 0.75rem; /* زيادة انحناء الزوايا */
+  border-radius: 0.5rem;
 }
 
 .p-4 {
-  padding: 1.5rem; /* زيادة الحشوة */
+  padding: 1rem;
 }
 
 .shadow-xl {
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2); /* زيادة ظل العنصر */
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+.border {
+  border-width: 1px;
+}
+
+.border-gray-700 {
+  border-color: #374151;
 }
 
 .w-16 {
-  width: 5rem; /* زيادة عرض الصورة */
+  width: 4rem;
 }
 
 .h-16 {
-  height: 5rem; /* زيادة ارتفاع الصورة */
+  height: 4rem;
 }
 
 .rounded-full {
-  border-radius: 50%; /* جعل الصورة دائريًا */
+  border-radius: 9999px;
 }
 
 .border-green-500 {
-  border-color: #10b981; /* لون الحدود */
+  border-color: #10b981;
 }
 
 .shadow-lg {
-  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.15);
+  box-shadow: 0 10px 15px rgba(0, 0, 0, 0.15);
 }
 
 .text-green-500 {
-  color: #10b981; /* لون النص للأخضر */
+  color: #10b981;
 }
 
 .text-white {
-  color: #ffffff; /* لون النص الأبيض */
+  color: #fff;
 }
 
-.text-sm {
-  font-size: 0.875rem; /* حجم الخط صغير */
-}
-
-.text-xl {
-  font-size: 1.25rem; /* حجم أكبر للعناوين */
+.text-2xl {
+  font-size: 1.5rem;
 }
 
 .font-bold {
-  font-weight: 700; /* خط عريض */
-}
-
-.hover\:shadow-lg:hover {
-  box-shadow: 0 15px 30px rgba(0, 0, 0, 0.25); /* تأثير الظل عند التمرير */
-}
-
-.transition {
-  transition: all 0.3s ease; /* تأثير الانتقال */
+  font-weight: 700;
 }
