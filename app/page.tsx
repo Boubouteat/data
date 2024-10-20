@@ -15,7 +15,7 @@ interface UserData {
 }
 
 // List of admins (only in the code, not displayed on the page)
-const admins = ['Borhane', 'Shaib'];
+const admins = ['boubou', 'Shaib'];
 
 export default function Home() {
   const [userData, setUserData] = useState<UserData | null>(null)
