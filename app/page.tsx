@@ -41,7 +41,7 @@ export default function Home() {
             className="w-16 h-16 rounded-full border-2 border-green-500 shadow-lg"
           />
           <div className="text-white">
-            <h1 className="text-2xl font-bold flex items-center">
+            <h1 className="text-lg font-bold flex items-center">
               {userData.first_name} {userData.last_name || ''}
               {isAdmin && (
                 <span className="ml-2 px-2 py-1 bg-green-500 text-white text-sm rounded">
