@@ -71,14 +71,14 @@ export default function Home() {
         <div className="text-white">Loading...</div>
       )}
 
-      {/* Show the gear icon for admin users */}
+      {/* Show the wrench icon for admin users */}
       {isAdmin && (
         <div className="fixed top-4 right-4 cursor-pointer" onClick={toggleModal}>
           <img
-            src="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.5.0/icons/gear-fill.svg" // أيقونة المسننة من Bootstrap
+            src="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.5.0/icons/wrench.svg" // أيقونة المفك من Bootstrap
             alt="Settings"
             className="w-8 h-8"
-            style={{ color: '#ADD8E6' }} // لون المسننة: أزرق فاتح
+            style={{ color: '#ADD8E6' }} // لون المفك: أزرق فاتح
           />
         </div>
       )}
@@ -133,8 +133,8 @@ export default function Home() {
           <div className="bg-white p-6 rounded-lg shadow-lg max-w-md w-full">
             <h2 className="text-lg font-bold mb-4">قائمة المسؤولين</h2>
             {/* جدول المسؤولين */}
-            <table className="table table-striped table-hover">
-              <thead className="thead-dark">
+            <table className="table table-bordered table-hover">
+              <thead className="thead-dark bg-dark text-white">
                 <tr>
                   <th>الاسم</th>
                   <th>الدور</th>
@@ -145,7 +145,7 @@ export default function Home() {
                   <tr key={index}>
                     <td>{admin.name}</td>
                     <td>
-                      <span className={`badge ${admin.role === 'Super Admin' ? 'bg-purple-500' : 'bg-success'}`}>
+                      <span className={`badge ${admin.role === 'Super Admin' ? 'bg-danger' : 'bg-primary'}`}>
                         {admin.role}
                       </span>
                     </td>
