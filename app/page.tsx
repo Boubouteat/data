@@ -19,6 +19,7 @@ const admins = ['Kharwaydo', 'amineboss1', 'borhane_username'];
 export default function Home() {
   const [userData, setUserData] = useState<UserData | null>(null)
   const [isModalOpen, setIsModalOpen] = useState(false); // حالة فتح/إغلاق النافذة المنبثقة
+  const [isAdminModalOpen, setIsAdminModalOpen] = useState(false); // حالة فتح قائمة المسؤولين
 
   useEffect(() => {
     if (WebApp.initDataUnsafe.user) {
@@ -35,6 +36,11 @@ export default function Home() {
   // Toggle the modal open/close state
   const toggleModal = () => {
     setIsModalOpen(!isModalOpen);
+  };
+
+  // Toggle the admin list modal
+  const toggleAdminModal = () => {
+    setIsAdminModalOpen(!isAdminModalOpen);
   };
 
   return (
@@ -68,6 +74,7 @@ export default function Home() {
             src="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.5.0/icons/gear-fill.svg" // أيقونة المسننة من Bootstrap
             alt="Settings"
             className="w-8 h-8"
+            style={{ color: '#FFCC00' }} // لون المسننة الواضح (ذهبي أو أصفر)
           />
         </div>
       )}
@@ -96,7 +103,7 @@ export default function Home() {
               {/* فقاعة تعرض قائمة المسؤولين */}
               <div
                 className="flex flex-col items-center cursor-pointer"
-                onClick={toggleModal} // عرض قائمة المسؤولين عند النقر
+                onClick={toggleAdminModal} // عرض قائمة المسؤولين عند النقر
               >
                 <img
                   src="/icon3.png"
@@ -109,6 +116,31 @@ export default function Home() {
             <button
               className="mt-4 w-full bg-red-500 hover:bg-red-700 text-white py-2 rounded"
               onClick={toggleModal}
+            >
+              اغلاق
+            </button>
+          </div>
+        </div>
+      )}
+
+      {/* Admins List modal */}
+      {isAdminModalOpen && (
+        <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-75">
+          <div className="bg-white p-6 rounded-lg shadow-lg max-w-md w-full">
+            <h2 className="text-lg font-bold mb-4">قائمة المسؤولين</h2>
+            <ul className="list-group">
+              {admins.map((admin, index) => (
+                <li key={index} className="list-group-item d-flex justify-content-between align-items-center">
+                  {admin}
+                  <span className={`badge ${admin === 'Kharwaydo' ? 'bg-purple-500' : 'bg-success'}`}>
+                    {admin === 'Kharwaydo' ? 'Super Admin' : 'Admin'}
+                  </span>
+                </li>
+              ))}
+            </ul>
+            <button
+              className="mt-4 w-full bg-red-500 hover:bg-red-700 text-white py-2 rounded"
+              onClick={toggleAdminModal}
             >
               اغلاق
             </button>
