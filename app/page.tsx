@@ -14,7 +14,7 @@ interface UserData {
 }
 
 // List of admins based on their username
-const admins = ['Kharwaydo', 'amineboss1', 'shaib_username']; // تأكد من إضافة اسم المستخدم الفعلي هنا
+const admins = ['Kharwaydo', 'amineboss1', 'borhane_username']; // تأكد من إضافة اسم المستخدم الفعلي هنا
 
 export default function Home() {
   const [userData, setUserData] = useState<UserData | null>(null)
@@ -57,7 +57,7 @@ export default function Home() {
 
       {/* Show bubble image for admin users */}
       {isAdmin && (
-        <a href="https://t.me/your_channel_username" target="_blank" rel="noopener noreferrer">
+        <a href="https://t.me/wgoRSZPpeiphY2Jk" target="_blank" rel="noopener noreferrer">
           <img
             src="/icon2.png"
             alt="Telegram Channel"
