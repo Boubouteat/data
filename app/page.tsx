@@ -18,6 +18,7 @@ const admins = ['Kharwaydo', 'amineboss1', 'borhane_username']; // تأكد من
 
 export default function Home() {
   const [userData, setUserData] = useState<UserData | null>(null)
+  const [isModalOpen, setIsModalOpen] = useState(false); // حالة فتح/إغلاق النافذة المنبثقة
 
   useEffect(() => {
     if (WebApp.initDataUnsafe.user) {
@@ -30,6 +31,11 @@ export default function Home() {
   const isAdmin = userData && admins.includes(userData.username || '');
 
   console.log('Is Admin:', isAdmin); // سجل ما إذا كان المستخدم مشرفًا
+
+  // Toggle the modal open/close state
+  const toggleModal = () => {
+    setIsModalOpen(!isModalOpen);
+  };
 
   return (
     <main className="p-4 bg-gray-900 min-h-screen">
@@ -57,13 +63,52 @@ export default function Home() {
 
       {/* Show bubble image for admin users */}
       {isAdmin && (
-        <a href="https://t.me/wgoRSZPpeiphY2Jk" target="_blank" rel="noopener noreferrer">
+        <div>
+          <a href="https://t.me/wgoRSZPpeiphY2Jk" target="_blank" rel="noopener noreferrer">
+            <img
+              src="/icon2.png"
+              alt="Telegram Channel"
+              className="fixed bottom-4 right-20 w-16 h-16 rounded-full border-2 border-green-500 shadow-lg cursor-pointer"
+            />
+          </a>
+
+          {/* Second bubble for opening the admin modal */}
           <img
-            src="/icon2.png"
-            alt="Telegram Channel"
-            className="fixed bottom-4 right-4 w-16 h-16 rounded-full border-2 border-green-500 shadow-lg cursor-pointer"
+            src="/icon3.png" // صورة للفقاعة الثانية
+            alt="Admins List"
+            className="fixed bottom-4 right-4 w-16 h-16 rounded-full border-2 border-blue-500 shadow-lg cursor-pointer"
+            onClick={toggleModal} // عند النقر، نفتح النافذة المنبثقة
           />
-        </a>
+        </div>
+      )}
+
+      {/* Admins modal */}
+      {isModalOpen && (
+        <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-75">
+          <div className="bg-gray-800 p-6 rounded-lg shadow-lg max-w-sm w-full text-white">
+            <h2 className="text-lg font-bold mb-4">Admins List</h2>
+            <ul>
+              {admins.map((admin) => (
+                <li key={admin} className="flex justify-between items-center mb-2">
+                  <span>{admin}</span>
+                  <span
+                    className={`px-2 py-1 text-sm rounded ${
+                      admin === 'Kharwaydo' ? 'bg-purple-500' : 'bg-green-500'
+                    }`}
+                  >
+                    {admin === 'Kharwaydo' ? 'super admin' : 'admin'}
+                  </span>
+                </li>
+              ))}
+            </ul>
+            <button
+              className="mt-4 w-full bg-red-500 hover:bg-red-700 text-white py-2 rounded"
+              onClick={toggleModal}
+            >
+              Close
+            </button>
+          </div>
+        </div>
       )}
     </main>
   )
