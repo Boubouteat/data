@@ -3,8 +3,8 @@
   align-items: center;
 }
 
-.space-x-4 {
-  gap: 1rem;
+.space-x-2 { /* تباعد أقل لتوزيع أفضل */
+  gap: 0.5rem;
 }
 
 .absolute {
@@ -24,15 +24,15 @@
 }
 
 .rounded-lg {
-  border-radius: 0.5rem;
+  border-radius: 0.75rem; /* زاوية أكثر انحناءً */
 }
 
-.p-4 {
-  padding: 1rem;
+.p-3 { /* تصغير الحواف قليلاً */
+  padding: 0.75rem;
 }
 
 .shadow-xl {
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  box-shadow: 0 6px 14px rgba(0, 0, 0, 0.2); /* ظلال ناعمة وأكثر دقة */
 }
 
 .border {
@@ -43,12 +43,12 @@
   border-color: #374151;
 }
 
-.w-16 {
-  width: 4rem;
+.w-12 { /* تصغير الحجم لجعل التصميم أكثر دقة */
+  width: 3rem;
 }
 
-.h-16 {
-  height: 4rem;
+.h-12 { /* تصغير الطول */
+  height: 3rem;
 }
 
 .rounded-full {
@@ -60,7 +60,7 @@
 }
 
 .shadow-lg {
-  box-shadow: 0 10px 15px rgba(0, 0, 0, 0.15);
+  box-shadow: 0 8px 12px rgba(0, 0, 0, 0.15);
 }
 
 .text-green-500 {
@@ -71,10 +71,18 @@
   color: #fff;
 }
 
-.text-2xl {
-  font-size: 1.5rem;
+.text-xl { /* تصغير حجم الخط قليلاً */
+  font-size: 1.25rem;
 }
 
 .font-bold {
   font-weight: 700;
+}
+
+.transition-all {
+  transition: all 0.3s ease; /* تأثير انتقال سلس */
+}
+
+.hover:shadow-2xl:hover {
+  box-shadow: 0 12px 20px rgba(0, 0, 0, 0.25); /* تأثير ظل عند التمرير */
 }
