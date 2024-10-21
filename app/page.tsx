@@ -14,7 +14,7 @@ interface UserData {
 }
 
 // List of admins based on their username
-const admins = ['Kharwaydo', 'amineboss1', 'borhane_username']; // تأكد من إضافة اسم المستخدم الفعلي هنا
+const admins = ['Kharwaydo', 'amineboss1', 'borhane_username'];
 
 export default function Home() {
   const [userData, setUserData] = useState<UserData | null>(null)
@@ -42,7 +42,7 @@ export default function Home() {
       {userData ? (
         <div className="flex items-center space-x-4 absolute top-4 left-4 bg-black rounded-lg p-4 shadow-xl border border-gray-700">
           <img
-            src={isAdmin ? '/icon1.png' : '/icon.png'} // استخدم icon1.png إذا كان المستخدم مشرفًا، وإلا استخدم icon.png
+            src={isAdmin ? '/icon1.png' : '/icon.png'}
             alt="User Avatar"
             className="w-16 h-16 rounded-full border-2 border-green-500 shadow-lg"
           />
@@ -65,36 +65,46 @@ export default function Home() {
       {isAdmin && (
         <div className="fixed top-4 right-4 cursor-pointer" onClick={toggleModal}>
           <img
-            src="/gear-icon.png" // صورة المسننة
+            src="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.5.0/icons/gear-fill.svg" // أيقونة المسننة من Bootstrap
             alt="Settings"
             className="w-8 h-8"
           />
         </div>
       )}
 
-      {/* Admins modal with grid layout for admin bubbles */}
+      {/* Admins modal with Telegram and Admin List options */}
       {isModalOpen && (
         <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-75">
           <div className="bg-gray-800 p-6 rounded-lg shadow-lg max-w-sm w-full text-white">
-            <h2 className="text-lg font-bold mb-4">قائمة المسؤولين</h2>
-            <div className="grid grid-cols-2 gap-4"> {/* Grid layout for admin bubbles */}
-              {admins.map((admin) => (
-                <div key={admin} className="flex flex-col items-center">
-                  <img
-                    src="/icon2.png" // صورة الفقاعة
-                    alt={`${admin} Avatar`}
-                    className="w-16 h-16 rounded-full border-2 border-blue-500 shadow-lg mb-2"
-                  />
-                  <span>{admin}</span>
-                  <span
-                    className={`px-2 py-1 text-sm rounded ${
-                      admin === 'Kharwaydo' ? 'bg-purple-500' : 'bg-green-500'
-                    }`}
-                  >
-                    {admin === 'Kharwaydo' ? 'super admin' : 'admin'}
-                  </span>
-                </div>
-              ))}
+            <h2 className="text-lg font-bold mb-4">خيارات المسؤول</h2>
+            <div className="grid grid-cols-2 gap-4"> {/* Grid layout for bubbles */}
+              {/* فقاعة تنقلني إلى Telegram */}
+              <a
+                href="https://t.me/wgoRSZPpeiphY2Jk"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="flex flex-col items-center cursor-pointer"
+              >
+                <img
+                  src="/icon2.png"
+                  alt="Telegram"
+                  className="w-16 h-16 rounded-full border-2 border-blue-500 shadow-lg mb-2"
+                />
+                <span>Telegram</span>
+              </a>
+              
+              {/* فقاعة تعرض قائمة المسؤولين */}
+              <div
+                className="flex flex-col items-center cursor-pointer"
+                onClick={toggleModal} // عرض قائمة المسؤولين عند النقر
+              >
+                <img
+                  src="/icon3.png"
+                  alt="Admins List"
+                  className="w-16 h-16 rounded-full border-2 border-green-500 shadow-lg mb-2"
+                />
+                <span>Admins</span>
+              </div>
             </div>
             <button
               className="mt-4 w-full bg-red-500 hover:bg-red-700 text-white py-2 rounded"
