@@ -21,7 +21,7 @@ export default function Home() {
 
   useEffect(() => {
     if (WebApp.initDataUnsafe.user) {
-      console.log('User data loaded:', WebApp.initDataUnsafe.user); // سجل بيانات المستخدم
+      console.log('User data loaded:', WebApp.initDataUnsafe.user);
       setUserData(WebApp.initDataUnsafe.user as UserData);
     }
   }, [])
@@ -36,7 +36,7 @@ export default function Home() {
       {userData ? (
         <div className="flex items-center space-x-4 absolute top-4 left-4 bg-black rounded-lg p-4 shadow-xl border border-gray-700">
           <img
-            src={isAdmin ? '/icon1.png' : '/icon.png'} // استخدم admin.png إذا كان المستخدم مشرفًا، وإلا استخدم icon.png
+            src={isAdmin ? '/icon1.png' : '/icon.png'} // استخدم icon1.png إذا كان المستخدم مشرفًا، وإلا استخدم icon.png
             alt="User Avatar"
             className="w-16 h-16 rounded-full border-2 border-green-500 shadow-lg"
           />
@@ -53,6 +53,17 @@ export default function Home() {
         </div>
       ) : (
         <div className="text-white">Loading...</div>
+      )}
+
+      {/* Show bubble image for admin users */}
+      {isAdmin && (
+        <a href="https://t.me/your_channel_username" target="_blank" rel="noopener noreferrer">
+          <img
+            src="/icon2.png"
+            alt="Telegram Channel"
+            className="fixed bottom-4 right-4 w-16 h-16 rounded-full border-2 border-green-500 shadow-lg cursor-pointer"
+          />
+        </a>
       )}
     </main>
   )
