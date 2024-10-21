@@ -3,7 +3,7 @@
 import WebApp from '@twa-dev/sdk'
 import { useEffect, useState } from 'react'
 
-// Define the interface for user data
+// تعريف واجهة بيانات المستخدم
 interface UserData {
   id: number;
   first_name: string;
@@ -13,7 +13,7 @@ interface UserData {
   is_premium?: boolean;
 }
 
-// List of admins based on their username and role
+// قائمة المسؤولين بناءً على اسم المستخدم والدور
 const admins = [
   { name: 'Kharwaydo', role: 'Super Admin' },
   { name: 'amineboss1', role: 'Admin' },
@@ -21,57 +21,73 @@ const admins = [
 ];
 
 export default function Home() {
-  const [userData, setUserData] = useState<UserData | null>(null)
+  const [userData, setUserData] = useState<UserData | null>(null);
   const [isModalOpen, setIsModalOpen] = useState(false); // حالة فتح/إغلاق النافذة المنبثقة
   const [isAdminModalOpen, setIsAdminModalOpen] = useState(false); // حالة فتح قائمة المسؤولين
+  const [isMaintenanceMode, setIsMaintenanceMode] = useState(false); // حالة وضع الصيانة
 
   useEffect(() => {
     if (WebApp.initDataUnsafe.user) {
       console.log('User data loaded:', WebApp.initDataUnsafe.user);
       setUserData(WebApp.initDataUnsafe.user as UserData);
     }
-  }, [])
+  }, []);
 
-  // Check if the user is an admin based on username
+  // تحقق مما إذا كان المستخدم إداريًا بناءً على اسم المستخدم
   const isAdmin = userData && admins.some(admin => admin.name === (userData.username || ''));
 
   console.log('Is Admin:', isAdmin); // سجل ما إذا كان المستخدم مشرفًا
 
-  // Toggle the modal open/close state
+  // تبديل حالة النافذة المنبثقة
   const toggleModal = () => {
     setIsModalOpen(!isModalOpen);
   };
 
-  // Toggle the admin list modal
+  // تبديل نافذة قائمة المسؤولين
   const toggleAdminModal = () => {
     setIsAdminModalOpen(!isAdminModalOpen);
+  };
+
+  // تبديل وضع الصيانة
+  const toggleMaintenanceMode = () => {
+    setIsMaintenanceMode(!isMaintenanceMode);
   };
 
   return (
     <main className="p-4 bg-gray-900 min-h-screen">
       {userData ? (
-        <div className="flex items-center space-x-4 absolute top-4 left-4 bg-black rounded-lg p-4 shadow-xl border border-gray-700">
-          <img
-            src={isAdmin ? '/icon1.png' : '/icon.png'}
-            alt="User Avatar"
-            className="w-16 h-16 rounded-full border-2 border-green-500 shadow-lg"
-          />
-          <div className="text-white">
-            <h1 className="text-lg font-bold flex items-center">
-              {userData.first_name} {userData.last_name || ''}
-              {isAdmin && (
-                <span className="ml-2 px-2 py-1 bg-green-500 text-white text-sm rounded">
-                  admin
-                </span>
-              )}
-            </h1>
-          </div>
-        </div>
+        <>
+          {/* إذا كان في وضع الصيانة ولا المستخدم إداري */}
+          {isMaintenanceMode && !isAdmin ? (
+            <div className="text-white text-center mt-20">
+              <h2 className="text-lg font-bold">الموقع تحت الصيانة</h2>
+              <p>نعتذر عن الإزعاج. يرجى التحقق لاحقًا.</p>
+            </div>
+          ) : (
+            <div className="flex items-center space-x-4 absolute top-4 left-4 bg-black rounded-lg p-4 shadow-xl border border-gray-700">
+              <img
+                src={isAdmin ? '/icon1.png' : '/icon.png'}
+                alt="User Avatar"
+                className="w-16 h-16 rounded-full border-2 border-green-500 shadow-lg"
+              />
+              <div className="text-white">
+                <h1 className="text-lg font-bold flex items-center">
+                  {userData.first_name} {userData.last_name || ''}
+                  {isAdmin && (
+                    <span className="ml-2 px-2 py-1 bg-green-500 text-white text-sm rounded">
+                      admin
+                    </span>
+                  )}
+                </h1>
+              </div>
+            </div>
+          )}
+        </>
       ) : (
         <div className="text-white">Loading...</div>
       )}
 
-      {/* Show the wrench icon for admin users */}
+      {/* عرض أيقونة المفك للمستخدمين الإداريين */}
       {isAdmin && (
         <div className="fixed top-4 right-4 cursor-pointer" onClick={toggleModal}>
           <img
@@ -83,7 +99,7 @@ export default function Home() {
         </div>
       )}
 
-      {/* Admins modal with Telegram and Admin List options */}
+      {/* نافذة منبثقة للإدارة مع خيارات Telegram وقائمة المسؤولين */}
       {isModalOpen && (
         <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-75">
           <div className="bg-gray-800 p-6 rounded-lg shadow-lg max-w-sm w-full text-white">
@@ -116,6 +132,19 @@ export default function Home() {
                 />
                 <span>Admins</span>
               </div>
+
+              {/* فقاعة لتبديل وضع الصيانة */}
+              <div
+                className="flex flex-col items-center cursor-pointer"
+                onClick={toggleMaintenanceMode} // تبديل وضع الصيانة
+              >
+                <img
+                  src="/icon4.png" // استخدم أيقونة مناسبة لوضع الصيانة
+                  alt="Toggle Maintenance"
+                  className="w-16 h-16 rounded-full border-2 border-yellow-500 shadow-lg mb-2"
+                />
+                <span>{isMaintenanceMode ? 'إيقاف وضع الصيانة' : 'تشغيل وضع الصيانة'}</span>
+              </div>
             </div>
             <button
               className="mt-4 w-full bg-red-500 hover:bg-red-700 text-white py-2 rounded"
@@ -127,7 +156,7 @@ export default function Home() {
         </div>
       )}
 
-      {/* Admins List modal */}
+      {/* نافذة قائمة المسؤولين */}
       {isAdminModalOpen && (
         <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-75">
           <div className="bg-white p-6 rounded-lg shadow-lg max-w-md w-full">
@@ -163,5 +192,5 @@ export default function Home() {
         </div>
       )}
     </main>
-  )
+  );
 }
