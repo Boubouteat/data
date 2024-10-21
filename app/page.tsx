@@ -14,7 +14,7 @@ interface UserData {
 }
 
 // List of admins based on their username
-const admins = ['Kharwaydo', 'amineboss1', 'borhane_username'];
+const admins = ['Kharwaydo', 'amineboss1', 'walidbettou'];
 
 export default function Home() {
   const [userData, setUserData] = useState<UserData | null>(null)
