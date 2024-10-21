@@ -17,7 +17,7 @@ interface UserData {
 const admins = [
   { name: 'Kharwaydo', role: 'Super Admin' },
   { name: 'amineboss1', role: 'Admin' },
-  { name: 'borhane_username', role: 'Admin' }
+  { name: 'Yrqr52', role: 'Admin' }
 ];
 
 export default function Home() {
@@ -87,7 +87,7 @@ export default function Home() {
       {isModalOpen && (
         <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-75">
           <div className="bg-gray-800 p-6 rounded-lg shadow-lg max-w-sm w-full text-white">
-            <h2 className="text-lg font-bold mb-4">خيارات المسؤول</h2>
+            <h2 className="text-lg font-bold mb-4">Admin Panel hex</h2>
             <div className="grid grid-cols-2 gap-4"> {/* Grid layout for bubbles */}
               {/* فقاعة تنقلني إلى Telegram */}
               <a
@@ -131,7 +131,7 @@ export default function Home() {
       {isAdminModalOpen && (
         <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-75">
           <div className="bg-white p-6 rounded-lg shadow-lg max-w-md w-full">
-            <h2 className="text-lg font-bold mb-4">قائمة المسؤولين</h2>
+            <h2 className="text-lg font-bold mb-4">Admins List</h2>
             {/* جدول المسؤولين */}
             <table className="table table-bordered table-hover">
               <thead className="thead-dark bg-dark text-white">
