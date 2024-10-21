@@ -14,11 +14,12 @@ interface UserData {
 }
 
 // List of admins based on their username
-const admins = ['Kharwaydo', 'amineboss1', 'borhane_username']; // تأكد من إضافة اسم المستخدم الفعلي هنا
+const admins = ['Kharwaydo', 'amineboss1', 'borhane_username'];
 
 export default function Home() {
   const [userData, setUserData] = useState<UserData | null>(null)
-  const [isModalOpen, setIsModalOpen] = useState(false); // حالة فتح/إغلاق النافذة المنبثقة
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [clicks, setClicks] = useState<{ x: number; y: number }[]>([]); // Store click positions
 
   useEffect(() => {
     if (WebApp.initDataUnsafe.user) {
@@ -30,19 +31,28 @@ export default function Home() {
   // Check if the user is an admin based on username
   const isAdmin = userData && admins.includes(userData.username || '');
 
-  console.log('Is Admin:', isAdmin); // سجل ما إذا كان المستخدم مشرفًا
-
   // Toggle the modal open/close state
   const toggleModal = () => {
     setIsModalOpen(!isModalOpen);
   };
 
+  // Handle click on the gif
+  const handleGifClick = (e: React.MouseEvent<HTMLImageElement>) => {
+    const { clientX, clientY } = e;
+    setClicks([...clicks, { x: clientX, y: clientY }]); // Capture click position
+
+    // Remove the click effect after a short delay
+    setTimeout(() => {
+      setClicks((prevClicks) => prevClicks.slice(1));
+    }, 1000); // Duration for the "قريبًا" text to disappear
+  };
+
   return (
-    <main className="p-4 bg-gray-900 min-h-screen">
+    <main className="p-4 bg-gray-900 min-h-screen relative">
       {userData ? (
         <div className="flex items-center space-x-4 absolute top-4 left-4 bg-black rounded-lg p-4 shadow-xl border border-gray-700">
           <img
-            src={isAdmin ? '/icon1.png' : '/icon.png'} // استخدم icon1.png إذا كان المستخدم مشرفًا، وإلا استخدم icon.png
+            src={isAdmin ? '/icon1.png' : '/icon.png'}
             alt="User Avatar"
             className="w-16 h-16 rounded-full border-2 border-green-500 shadow-lg"
           />
@@ -74,10 +84,10 @@ export default function Home() {
 
           {/* Second bubble for opening the admin modal */}
           <img
-            src="/icon3.png" // صورة للفقاعة الثانية
+            src="/icon3.png"
             alt="Admins List"
             className="fixed bottom-4 right-4 w-16 h-16 rounded-full border-2 border-blue-500 shadow-lg cursor-pointer"
-            onClick={toggleModal} // عند النقر، نفتح النافذة المنبثقة
+            onClick={toggleModal}
           />
         </div>
       )}
@@ -110,6 +120,47 @@ export default function Home() {
           </div>
         </div>
       )}
+
+      {/* Tiger gif in the center of the screen */}
+      <div className="flex justify-center items-center h-screen">
+        <img
+          src="/tiger.gif"
+          alt="Tiger Gif"
+          className="w-48 h-48 cursor-pointer animate-pulse"
+          onClick={handleGifClick}
+        />
+      </div>
+
+      {/* Render the "قريبًا" text on click */}
+      {clicks.map((click, index) => (
+        <span
+          key={index}
+          className="absolute text-white text-sm animate-rise"
+          style={{
+            left: click.x,
+            top: click.y,
+            transform: 'translate(-50%, -50%)',
+          }}
+        >
+          قريبًا
+        </span>
+      ))}
+
+      <style jsx>{`
+        @keyframes rise {
+          0% {
+            opacity: 1;
+            transform: translate(-50%, -50%) translateY(0);
+          }
+          100% {
+            opacity: 0;
+            transform: translate(-50%, -50%) translateY(-20px);
+          }
+        }
+        .animate-rise {
+          animation: rise 1s ease-out forwards;
+        }
+      `}</style>
     </main>
   )
 }
