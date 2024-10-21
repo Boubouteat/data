@@ -124,7 +124,7 @@ export default function Home() {
       {/* Tiger gif in the center of the screen */}
       <div className="flex justify-center items-center h-screen">
         <img
-          src="/tiger.gif"
+          src="/icon1.png"
           alt="Tiger Gif"
           className="w-48 h-48 cursor-pointer animate-pulse"
           onClick={handleGifClick}
