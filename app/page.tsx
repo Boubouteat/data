@@ -124,7 +124,7 @@ export default function Home() {
       {/* Tiger image in the center of the screen */}
       <div className="flex justify-center items-center h-screen">
         <img
-          src="/icon30.png" // Changed to tiger.png
+          src="/icon7.png" // Changed to tiger.png
           alt="Tiger Image"
           className="w-64 h-64 cursor-pointer" // Increased size of the image
           onClick={handleImageClick}
