@@ -36,8 +36,8 @@ export default function Home() {
     setIsModalOpen(!isModalOpen);
   };
 
-  // Handle click on the gif
-  const handleGifClick = (e: React.MouseEvent<HTMLImageElement>) => {
+  // Handle click on the image
+  const handleImageClick = (e: React.MouseEvent<HTMLImageElement>) => {
     const { clientX, clientY } = e;
     setClicks([...clicks, { x: clientX, y: clientY }]); // Capture click position
 
@@ -121,13 +121,13 @@ export default function Home() {
         </div>
       )}
 
-      {/* Tiger gif in the center of the screen */}
+      {/* Tiger image in the center of the screen */}
       <div className="flex justify-center items-center h-screen">
         <img
-          src="/tiger.png"
-          alt="Tiger Gif"
-          className="w-64 h-64 cursor-pointer" // Increased size of the GIF
-          onClick={handleGifClick}
+          src="/tiger.png" // Changed to tiger.png
+          alt="Tiger Image"
+          className="w-64 h-64 cursor-pointer" // Increased size of the image
+          onClick={handleImageClick}
         />
       </div>
 
@@ -135,7 +135,7 @@ export default function Home() {
       {clicks.map((click, index) => (
         <span
           key={index}
-          className="absolute text-white text-lg animate-rise" // Increased font size
+          className="absolute text-white text-xl animate-rise" // Increased font size
           style={{
             left: click.x,
             top: click.y,
