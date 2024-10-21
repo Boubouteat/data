@@ -61,35 +61,30 @@ export default function Home() {
         <div className="text-white">Loading...</div>
       )}
 
-      {/* Show bubble image for admin users */}
+      {/* Show the gear icon for admin users */}
       {isAdmin && (
-        <div>
-          <a href="https://t.me/wgoRSZPpeiphY2Jk" target="_blank" rel="noopener noreferrer">
-            <img
-              src="/icon2.png"
-              alt="Telegram Channel"
-              className="fixed bottom-4 right-20 w-16 h-16 rounded-full border-2 border-green-500 shadow-lg cursor-pointer"
-            />
-          </a>
-
-          {/* Second bubble for opening the admin modal */}
+        <div className="fixed top-4 right-4 cursor-pointer" onClick={toggleModal}>
           <img
-            src="/icon3.png" // صورة للفقاعة الثانية
-            alt="Admins List"
-            className="fixed bottom-4 right-4 w-16 h-16 rounded-full border-2 border-blue-500 shadow-lg cursor-pointer"
-            onClick={toggleModal} // عند النقر، نفتح النافذة المنبثقة
+            src="/gear-icon.png" // صورة المسننة
+            alt="Settings"
+            className="w-8 h-8"
           />
         </div>
       )}
 
-      {/* Admins modal */}
+      {/* Admins modal with grid layout for admin bubbles */}
       {isModalOpen && (
         <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-75">
           <div className="bg-gray-800 p-6 rounded-lg shadow-lg max-w-sm w-full text-white">
             <h2 className="text-lg font-bold mb-4">قائمة المسؤولين</h2>
-            <ul>
+            <div className="grid grid-cols-2 gap-4"> {/* Grid layout for admin bubbles */}
               {admins.map((admin) => (
-                <li key={admin} className="flex justify-between items-center mb-2">
+                <div key={admin} className="flex flex-col items-center">
+                  <img
+                    src="/icon2.png" // صورة الفقاعة
+                    alt={`${admin} Avatar`}
+                    className="w-16 h-16 rounded-full border-2 border-blue-500 shadow-lg mb-2"
+                  />
                   <span>{admin}</span>
                   <span
                     className={`px-2 py-1 text-sm rounded ${
@@ -98,9 +93,9 @@ export default function Home() {
                   >
                     {admin === 'Kharwaydo' ? 'super admin' : 'admin'}
                   </span>
-                </li>
+                </div>
               ))}
-            </ul>
+            </div>
             <button
               className="mt-4 w-full bg-red-500 hover:bg-red-700 text-white py-2 rounded"
               onClick={toggleModal}
