@@ -13,8 +13,12 @@ interface UserData {
   is_premium?: boolean;
 }
 
-// List of admins based on their username
-const admins = ['Kharwaydo', 'amineboss1', 'borhane_username'];
+// List of admins based on their username and role
+const admins = [
+  { name: 'Kharwaydo', role: 'Super Admin' },
+  { name: 'amineboss1', role: 'Admin' },
+  { name: 'borhane_username', role: 'Admin' }
+];
 
 export default function Home() {
   const [userData, setUserData] = useState<UserData | null>(null)
@@ -29,7 +33,7 @@ export default function Home() {
   }, [])
 
   // Check if the user is an admin based on username
-  const isAdmin = userData && admins.includes(userData.username || '');
+  const isAdmin = userData && admins.some(admin => admin.name === (userData.username || ''));
 
   console.log('Is Admin:', isAdmin); // سجل ما إذا كان المستخدم مشرفًا
 
@@ -74,7 +78,7 @@ export default function Home() {
             src="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.5.0/icons/gear-fill.svg" // أيقونة المسننة من Bootstrap
             alt="Settings"
             className="w-8 h-8"
-            style={{ color: '#FFCC00' }} // لون المسننة الواضح (ذهبي أو أصفر)
+            style={{ color: '#ADD8E6' }} // لون المسننة: أزرق فاتح
           />
         </div>
       )}
@@ -128,16 +132,27 @@ export default function Home() {
         <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-75">
           <div className="bg-white p-6 rounded-lg shadow-lg max-w-md w-full">
             <h2 className="text-lg font-bold mb-4">قائمة المسؤولين</h2>
-            <ul className="list-group">
-              {admins.map((admin, index) => (
-                <li key={index} className="list-group-item d-flex justify-content-between align-items-center">
-                  {admin}
-                  <span className={`badge ${admin === 'Kharwaydo' ? 'bg-purple-500' : 'bg-success'}`}>
-                    {admin === 'Kharwaydo' ? 'Super Admin' : 'Admin'}
-                  </span>
-                </li>
-              ))}
-            </ul>
+            {/* جدول المسؤولين */}
+            <table className="table table-striped table-hover">
+              <thead className="thead-dark">
+                <tr>
+                  <th>الاسم</th>
+                  <th>الدور</th>
+                </tr>
+              </thead>
+              <tbody>
+                {admins.map((admin, index) => (
+                  <tr key={index}>
+                    <td>{admin.name}</td>
+                    <td>
+                      <span className={`badge ${admin.role === 'Super Admin' ? 'bg-purple-500' : 'bg-success'}`}>
+                        {admin.role}
+                      </span>
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
             <button
               className="mt-4 w-full bg-red-500 hover:bg-red-700 text-white py-2 rounded"
               onClick={toggleAdminModal}
