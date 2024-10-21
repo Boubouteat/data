@@ -86,7 +86,7 @@ export default function Home() {
       {isModalOpen && (
         <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-75">
           <div className="bg-gray-800 p-6 rounded-lg shadow-lg max-w-sm w-full text-white">
-            <h2 className="text-lg font-bold mb-4">Admins List</h2>
+            <h2 className="text-lg font-bold mb-4">قائمة المسؤولين</h2>
             <ul>
               {admins.map((admin) => (
                 <li key={admin} className="flex justify-between items-center mb-2">
@@ -105,7 +105,7 @@ export default function Home() {
               className="mt-4 w-full bg-red-500 hover:bg-red-700 text-white py-2 rounded"
               onClick={toggleModal}
             >
-              Close
+              اغلاق
             </button>
           </div>
         </div>
