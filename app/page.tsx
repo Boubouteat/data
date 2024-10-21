@@ -124,9 +124,9 @@ export default function Home() {
       {/* Tiger gif in the center of the screen */}
       <div className="flex justify-center items-center h-screen">
         <img
-          src="/icon1.png"
+          src="/tiger.gif"
           alt="Tiger Gif"
-          className="w-48 h-48 cursor-pointer animate-pulse"
+          className="w-64 h-64 cursor-pointer" // Increased size of the GIF
           onClick={handleGifClick}
         />
       </div>
@@ -135,7 +135,7 @@ export default function Home() {
       {clicks.map((click, index) => (
         <span
           key={index}
-          className="absolute text-white text-sm animate-rise"
+          className="absolute text-white text-lg animate-rise" // Increased font size
           style={{
             left: click.x,
             top: click.y,
@@ -157,8 +157,19 @@ export default function Home() {
             transform: translate(-50%, -50%) translateY(-20px);
           }
         }
+        @keyframes pulse {
+          0%, 100% {
+            transform: scale(1);
+          }
+          50% {
+            transform: scale(1.1);
+          }
+        }
         .animate-rise {
           animation: rise 1s ease-out forwards;
+        }
+        .cursor-pointer:hover {
+          animation: pulse 0.5s ease-in-out; // Adding a pulse effect on hover
         }
       `}</style>
     </main>
