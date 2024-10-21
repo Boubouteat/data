@@ -78,7 +78,7 @@ export default function Home() {
             src="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.5.0/icons/wrench.svg" // أيقونة المفك من Bootstrap
             alt="Settings"
             className="w-8 h-8"
-            style={{ color: '#ADD8E6' }} // لون المفك: أزرق فاتح
+            style={{ filter: 'invert(100%)', color: '#00BFFF' }} // لون المفك: أزرق فاتح وواضح
           />
         </div>
       )}
@@ -145,7 +145,7 @@ export default function Home() {
                   <tr key={index}>
                     <td>{admin.name}</td>
                     <td>
-                      <span className={`badge ${admin.role === 'Super Admin' ? 'bg-danger' : 'bg-primary'}`}>
+                      <span className={`badge ${admin.role === 'Super Admin' ? 'bg-purple-500' : 'bg-green-500'}`}>
                         {admin.role}
                       </span>
                     </td>
