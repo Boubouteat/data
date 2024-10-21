@@ -75,7 +75,7 @@ export default function Home() {
       {isAdmin && (
         <div className="fixed top-4 right-4 cursor-pointer" onClick={toggleModal}>
           <img
-            src="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.5.0/icons/gear.svg" // أيقونة المفك من Bootstrap
+            src="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/icons/person-gear.svg" // أيقونة المفك من Bootstrap
             alt="Settings"
             className="w-8 h-8"
             style={{ filter: 'invert(100%)', color: '#00BFFF' }} // لون المفك: أزرق فاتح وواضح
