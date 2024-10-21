@@ -87,7 +87,7 @@ export default function Home() {
       {isModalOpen && (
         <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-75">
           <div className="bg-gray-800 p-6 rounded-lg shadow-lg max-w-sm w-full text-white">
-            <h2 className="text-lg font-bold mb-4">Admin Panel hex</h2>
+            <h2 className="text-lg font-bold mb-4">Admin Panel Hex</h2>
             <div className="grid grid-cols-2 gap-4"> {/* Grid layout for bubbles */}
               {/* فقاعة تنقلني إلى Telegram */}
               <a
