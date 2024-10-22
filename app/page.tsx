@@ -59,11 +59,9 @@ export default function Home() {
       <main className="p-4 bg-gray-900 min-h-screen flex items-center justify-center">
         <div className="text-center">
           <img src="/icon8.png" alt="Banned Icon" className="mx-auto mb-4 w-32 h-32" />
-          <div className="alert alert-warning" role="alert">
+          <div className="alert" role="alert" style={{ color: 'red', border: '1px solid red' }}>
             <h4 className="alert-heading">أنت محظور</h4>
             <p>لقد تم حظرك من الوصول إلى هذه الصفحة. إذا كنت تعتقد أن هذا حدث عن طريق الخطأ، الرجاء الاتصال بالمسؤول.</p>
-            <hr />
-            <p className="mb-0">للمزيد من المعلومات، يرجى التواصل مع دعم العملاء.</p>
           </div>
         </div>
       </main>
