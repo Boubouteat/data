@@ -16,8 +16,8 @@ interface UserData {
 
 // قائمة المستخدمين المحظورين بناءً على اسم المستخدم أو ID
 const bannedUsers = [
-  { id: 1, username: 'Yrqr52' },
-  { id: 2, username: 'amineboss1' },
+  { id: 1, username: 'amineboss1' },
+  { id: 2, username: 'Yrqr52' },
   // يمكن إضافة المزيد من المستخدمين المحظورين هنا
 ];
 
@@ -59,9 +59,11 @@ export default function Home() {
       <main className="p-4 bg-gray-900 min-h-screen flex items-center justify-center">
         <div className="text-center">
           <img src="/icon8.png" alt="Banned Icon" className="mx-auto mb-4 w-32 h-32" />
-          <div className="alert alert-danger" role="alert">
+          <div className="alert alert-warning" role="alert">
             <h4 className="alert-heading">أنت محظور</h4>
             <p>لقد تم حظرك من الوصول إلى هذه الصفحة. إذا كنت تعتقد أن هذا حدث عن طريق الخطأ، الرجاء الاتصال بالمسؤول.</p>
+            <hr />
+            <p className="mb-0">للمزيد من المعلومات، يرجى التواصل مع دعم العملاء.</p>
           </div>
         </div>
       </main>
