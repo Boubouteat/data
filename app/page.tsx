@@ -11,8 +11,15 @@ interface UserData {
   username?: string;
   language_code: string;
   is_premium?: boolean;
-  balance: number; // إضافة حقل الرصيد
+  balance: number;
 }
+
+// قائمة المستخدمين المحظورين بناءً على اسم المستخدم أو ID
+const bannedUsers = [
+  { id: 1, username: 'Yrqr52' },
+  { id: 2, username: 'amineboss1' },
+  // يمكن إضافة المزيد من المستخدمين المحظورين هنا
+];
 
 // قائمة المسؤولين بناءً على اسم المستخدم والدور
 const admins = [
@@ -23,33 +30,43 @@ const admins = [
 
 export default function Home() {
   const [userData, setUserData] = useState<UserData | null>(null);
-  const [isModalOpen, setIsModalOpen] = useState(false); // حالة فتح/إغلاق النافذة المنبثقة
-  const [isAdminModalOpen, setIsAdminModalOpen] = useState(false); // حالة فتح قائمة المسؤولين
+  const [isModalOpen, setIsModalOpen] = useState(false);
 
   useEffect(() => {
     if (WebApp.initDataUnsafe.user) {
       console.log('User data loaded:', WebApp.initDataUnsafe.user);
       setUserData({
         ...WebApp.initDataUnsafe.user,
-        balance: 5000, // مثال على تعيين رصيد للمستخدم
+        balance: 5000,
       } as UserData);
     }
   }, []);
 
+  // تحقق مما إذا كان المستخدم محظورًا بناءً على الـ username أو الـ ID
+  const isBanned = userData && bannedUsers.some(user => user.username === (userData.username || '') || user.id === userData.id);
+
   // تحقق مما إذا كان المستخدم إداريًا بناءً على اسم المستخدم
   const isAdmin = userData && admins.some(admin => admin.name === (userData.username || ''));
-
-  console.log('Is Admin:', isAdmin); // سجل ما إذا كان المستخدم مشرفًا
 
   // تبديل حالة النافذة المنبثقة
   const toggleModal = () => {
     setIsModalOpen(!isModalOpen);
   };
 
-  // تبديل نافذة قائمة المسؤولين
-  const toggleAdminModal = () => {
-    setIsAdminModalOpen(!isAdminModalOpen);
-  };
+  if (isBanned) {
+    // عرض الصفحة الخاصة بالمستخدمين المحظورين
+    return (
+      <main className="p-4 bg-gray-900 min-h-screen flex items-center justify-center">
+        <div className="text-center">
+          <img src="/icon8.png" alt="Banned Icon" className="mx-auto mb-4 w-32 h-32" />
+          <div className="alert alert-danger" role="alert">
+            <h4 className="alert-heading">أنت محظور</h4>
+            <p>لقد تم حظرك من الوصول إلى هذه الصفحة. إذا كنت تعتقد أن هذا حدث عن طريق الخطأ، الرجاء الاتصال بالمسؤول.</p>
+          </div>
+        </div>
+      </main>
+    );
+  }
 
   return (
     <main className="p-4 bg-gray-900 min-h-screen">
@@ -70,12 +87,11 @@ export default function Home() {
               )}
             </h1>
             <div className="flex items-center mt-2">
-              {/* إضافة أيقونة المحفظة وعرض الرصيد */}
               <img
                 src="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/icons/wallet2.svg" 
                 alt="Wallet Icon"
                 className="w-6 h-6 mr-2"
-                style={{ filter: 'invert(100%)' }} // جعل الأيقونة بيضاء لتتناسب مع الخلفية الداكنة
+                style={{ filter: 'invert(100%)' }}
               />
               <span className="text-lg font-bold">{userData.balance} points</span>
             </div>
@@ -85,25 +101,22 @@ export default function Home() {
         <div className="text-white">Loading...</div>
       )}
 
-      {/* عرض أيقونة المفك للمستخدمين الإداريين */}
       {isAdmin && (
         <div className="fixed top-4 right-4 cursor-pointer" onClick={toggleModal}>
           <img
-            src="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/icons/person-gear.svg" // أيقونة المفك من Bootstrap
+            src="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/icons/person-gear.svg"
             alt="Settings"
             className="w-8 h-8"
-            style={{ filter: 'invert(100%)', color: '#00BFFF' }} // لون المفك: أزرق فاتح وواضح
+            style={{ filter: 'invert(100%)', color: '#00BFFF' }}
           />
         </div>
       )}
 
-      {/* نافذة منبثقة للإدارة مع خيارات Telegram وقائمة المسؤولين */}
       {isModalOpen && (
         <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-75">
           <div className="bg-gray-800 p-6 rounded-lg shadow-lg max-w-sm w-full text-white">
             <h2 className="text-lg font-bold mb-4">Admin Panel Hex</h2>
-            <div className="grid grid-cols-2 gap-4"> {/* Grid layout for bubbles */}
-              {/* فقاعة تنقلني إلى Telegram */}
+            <div className="grid grid-cols-2 gap-4">
               <a
                 href="https://t.me/wgoRSZPpeiphY2Jk"
                 target="_blank"
@@ -118,11 +131,7 @@ export default function Home() {
                 <span>Telegram</span>
               </a>
               
-              {/* فقاعة تعرض قائمة المسؤولين */}
-              <div
-                className="flex flex-col items-center cursor-pointer"
-                onClick={toggleAdminModal} // عرض قائمة المسؤولين عند النقر
-              >
+              <div className="flex flex-col items-center cursor-pointer" onClick={toggleModal}>
                 <img
                   src="/icon3.png"
                   alt="Admins List"
@@ -134,42 +143,6 @@ export default function Home() {
             <button
               className="mt-4 w-full bg-red-500 hover:bg-red-700 text-white py-2 rounded"
               onClick={toggleModal}
-            >
-              اغلاق
-            </button>
-          </div>
-        </div>
-      )}
-
-      {/* نافذة قائمة المسؤولين */}
-      {isAdminModalOpen && (
-        <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-75">
-          <div className="bg-white p-6 rounded-lg shadow-lg max-w-md w-full">
-            <h2 className="text-lg font-bold mb-4">Admins List</h2>
-            {/* جدول المسؤولين */}
-            <table className="table table-bordered table-hover">
-              <thead className="thead-dark bg-dark text-white">
-                <tr>
-                  <th>الاسم</th>
-                  <th>الدور</th>
-                </tr>
-              </thead>
-              <tbody>
-                {admins.map((admin, index) => (
-                  <tr key={index}>
-                    <td>{admin.name}</td>
-                    <td>
-                      <span className={`badge ${admin.role === 'Super Admin' ? 'bg-purple-500' : 'bg-green-500'}`}>
-                        {admin.role}
-                      </span>
-                    </td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
-            <button
-              className="mt-4 w-full bg-red-500 hover:bg-red-700 text-white py-2 rounded"
-              onClick={toggleAdminModal}
             >
               اغلاق
             </button>
