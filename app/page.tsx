@@ -17,7 +17,7 @@ interface UserData {
 // قائمة المستخدمين المحظورين بناءً على اسم المستخدم أو ID
 const bannedUsers = [
   { id: 1, username: 'amineboss1' },
-  { id: 2, username: 'Yrqr52' },
+  { id: 2, username: 'walidbettou' },
   // يمكن إضافة المزيد من المستخدمين المحظورين هنا
 ];
 
