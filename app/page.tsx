@@ -11,6 +11,7 @@ interface UserData {
   username?: string;
   language_code: string;
   is_premium?: boolean;
+  balance: number; // إضافة حقل الرصيد
 }
 
 // قائمة المسؤولين بناءً على اسم المستخدم والدور
@@ -28,7 +29,10 @@ export default function Home() {
   useEffect(() => {
     if (WebApp.initDataUnsafe.user) {
       console.log('User data loaded:', WebApp.initDataUnsafe.user);
-      setUserData(WebApp.initDataUnsafe.user as UserData);
+      setUserData({
+        ...WebApp.initDataUnsafe.user,
+        balance: 5000, // مثال على تعيين رصيد للمستخدم
+      } as UserData);
     }
   }, []);
 
@@ -65,6 +69,16 @@ export default function Home() {
                 </span>
               )}
             </h1>
+            <div className="flex items-center mt-2">
+              {/* إضافة أيقونة المحفظة وعرض الرصيد */}
+              <img
+                src="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/icons/wallet2.svg" 
+                alt="Wallet Icon"
+                className="w-6 h-6 mr-2"
+                style={{ filter: 'invert(100%)' }} // جعل الأيقونة بيضاء لتتناسب مع الخلفية الداكنة
+              />
+              <span className="text-lg font-bold">{userData.balance} points</span>
+            </div>
           </div>
         </div>
       ) : (
