@@ -208,26 +208,25 @@ export default function Home() {
             </li>
             <li className="cursor-pointer" onClick={toggleMessageModal}>
               <img
-                src="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.5.0/icons/chat.svg"
+                src="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.5.0/icons/chat-left-text.svg"
                 alt="Send Message"
                 className="w-6 h-6 mr-2 inline"
               />
-              msg
+              Send Message
             </li>
           </ul>
         </div>
       )}
 
-      {/* نافذة حوار قائمة المسؤولين */}
+      {/* Dialog for Admin List */}
       {isAdminModalOpen && (
         <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50">
           <div className="bg-gray-800 p-6 rounded-lg shadow-lg text-white">
             <h2 className="text-xl mb-4">قائمة المسؤولين</h2>
             <ul>
-              {admins.map(admin => (
-                <li key={admin.name} className="flex justify-between mb-2">
-                  <span>{admin.name}</span>
-                  <span>{admin.role}</span>
+              {admins.map((admin, index) => (
+                <li key={index} className="py-2">
+                  {admin.name} - {admin.role}
                 </li>
               ))}
             </ul>
@@ -238,16 +237,15 @@ export default function Home() {
         </div>
       )}
 
-      {/* نافذة حوار قائمة المحظورين */}
+      {/* Dialog for Banned Users */}
       {isBanListModalOpen && (
         <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50">
           <div className="bg-gray-800 p-6 rounded-lg shadow-lg text-white">
             <h2 className="text-xl mb-4">قائمة المحظورين</h2>
             <ul>
-              {bannedUsers.map(user => (
-                <li key={user.username} className="flex justify-between mb-2">
-                  <span>{user.username}</span>
-                  <span>{user.reason}</span>
+              {bannedUsers.map((user, index) => (
+                <li key={index} className="py-2">
+                  {user.username} - {user.reason}
                 </li>
               ))}
             </ul>
@@ -258,36 +256,21 @@ export default function Home() {
         </div>
       )}
 
-      {/* نافذة حوار لإرسال الرسالة */}
+      {/* Dialog for Sending Message */}
       {isMessageModalOpen && (
         <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50">
           <div className="bg-gray-800 p-6 rounded-lg shadow-lg text-white">
-            <h2 className="text-xl mb-4">أرسل رسالة إلى القناة</h2>
+            <h2 className="text-xl mb-4">إرسال رسالة إلى القناة</h2>
             <textarea
-              className="w-full h-24 p-2 rounded mb-4 bg-gray-700 text-white"
+              className="w-full h-24 p-2 mb-4 rounded"
               placeholder="اكتب رسالتك هنا..."
               value={message}
               onChange={(e) => setMessage(e.target.value)}
             />
-            <div className="flex justify-between">
-              <button className="bg-green-500 px-4 py-2 rounded" onClick={sendMessageToChannel}>
-                إرسال
-              </button>
-              <button className="bg-red-500 px-4 py-2 rounded" onClick={toggleMessageModal}>
-                إغلاق
-              </button>
-            </div>
-          </div>
-        </div>
-      )}
-
-      {/* نافذة حوار عدد الأعضاء */}
-      {memberCount !== null && (
-        <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50">
-          <div className="bg-gray-800 p-6 rounded-lg shadow-lg text-white">
-            <h2 className="text-xl mb-4">عدد الأعضاء في القناة</h2>
-            <p className="text-lg">{memberCount} أعضاء</p>
-            <button className="mt-4 bg-red-500 px-4 py-2 rounded" onClick={() => setMemberCount(null)}>
+            <button className="bg-green-500 px-4 py-2 rounded" onClick={sendMessageToChannel}>
+              إرسال
+            </button>
+            <button className="mt-4 bg-red-500 px-4 py-2 rounded" onClick={toggleMessageModal}>
               إغلاق
             </button>
           </div>
