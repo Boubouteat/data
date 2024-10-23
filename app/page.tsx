@@ -30,7 +30,8 @@ const admins = [
 
 export default function Home() {
   const [userData, setUserData] = useState<UserData | null>(null);
-  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isAdminModalOpen, setIsAdminModalOpen] = useState(false);
+  const [isBanListModalOpen, setIsBanListModalOpen] = useState(false);
 
   useEffect(() => {
     if (WebApp.initDataUnsafe.user) {
@@ -49,8 +50,12 @@ export default function Home() {
   const isAdmin = userData && admins.some(admin => admin.name === (userData.username || ''));
 
   // تبديل حالة النافذة المنبثقة
-  const toggleModal = () => {
-    setIsModalOpen(!isModalOpen);
+  const toggleAdminModal = () => {
+    setIsAdminModalOpen(!isAdminModalOpen);
+  };
+
+  const toggleBanListModal = () => {
+    setIsBanListModalOpen(!isBanListModalOpen);
   };
 
   if (isBanned) {
@@ -102,47 +107,63 @@ export default function Home() {
       )}
 
       {isAdmin && (
-        <div className="fixed top-4 right-4 cursor-pointer" onClick={toggleModal}>
-          <img
-            src="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.5.0/icons/tree.svg"
-            alt="Settings"
-            className="w-8 h-8"
-            style={{ filter: 'invert(100%)', color: '#00BFFF' }}
-          />
+        <div className="fixed top-4 right-4 space-x-2 flex">
+          <div className="cursor-pointer" onClick={toggleAdminModal}>
+            <img
+              src="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.5.0/icons/tree.svg"
+              alt="Settings"
+              className="w-8 h-8"
+              style={{ filter: 'invert(100%)', color: '#00BFFF' }}
+            />
+          </div>
+          <div className="cursor-pointer" onClick={toggleBanListModal}>
+            <img
+              src="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.5.0/icons/person-x.svg"
+              alt="Ban List"
+              className="w-8 h-8"
+              style={{ filter: 'invert(100%)', color: 'red' }}
+            />
+          </div>
         </div>
       )}
 
-      {isModalOpen && (
+      {/* Admin Modal */}
+      {isAdminModalOpen && (
         <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-75">
           <div className="bg-gray-800 p-6 rounded-lg shadow-lg max-w-sm w-full text-white">
-            <h2 className="text-lg font-bold mb-4">Admin Panel Hex</h2>
-            <div className="grid grid-cols-2 gap-4">
-              <a
-                href="https://t.me/wgoRSZPpeiphY2Jk"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="flex flex-col items-center cursor-pointer"
-              >
-                <img
-                  src="/icon2.png"
-                  alt="Telegram"
-                  className="w-16 h-16 rounded-full border-2 border-blue-500 shadow-lg mb-2"
-                />
-                <span>Telegram</span>
-              </a>
-              
-              <div className="flex flex-col items-center cursor-pointer" onClick={toggleModal}>
-                <img
-                  src="/icon3.png"
-                  alt="Admins List"
-                  className="w-16 h-16 rounded-full border-2 border-green-500 shadow-lg mb-2"
-                />
-                <span>Admins</span>
-              </div>
-            </div>
+            <h2 className="text-lg font-bold mb-4">Admins List</h2>
+            <ul>
+              {admins.map((admin, index) => (
+                <li key={index} className="mb-2">
+                  {admin.name} - {admin.role}
+                </li>
+              ))}
+            </ul>
             <button
               className="mt-4 w-full bg-red-500 hover:bg-red-700 text-white py-2 rounded"
-              onClick={toggleModal}
+              onClick={toggleAdminModal}
+            >
+              اغلاق
+            </button>
+          </div>
+        </div>
+      )}
+
+      {/* Ban List Modal */}
+      {isBanListModalOpen && (
+        <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-75">
+          <div className="bg-gray-800 p-6 rounded-lg shadow-lg max-w-sm w-full text-white">
+            <h2 className="text-lg font-bold mb-4">Banned Users</h2>
+            <ul>
+              {bannedUsers.map((user, index) => (
+                <li key={index} className="mb-2">
+                  {user.username || `User ID: ${user.id}`}
+                </li>
+              ))}
+            </ul>
+            <button
+              className="mt-4 w-full bg-red-500 hover:bg-red-700 text-white py-2 rounded"
+              onClick={toggleBanListModal}
             >
               اغلاق
             </button>
