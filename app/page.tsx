@@ -66,7 +66,7 @@ export default function Home() {
   // وظيفة لجلب عدد الأعضاء من القناة
   const getChannelMembersCount = async () => {
     try {
-      const response = await fetch(`https://api.telegram.org/bot<7409408890:AAFdKiBDzDnya3ZERrtcHHUZdRipMsy1uBs>/getChatMembersCount?chat_id=-1002221437349`);
+      const response = await fetch(`https://api.telegram.org/bot7409408890:AAFdKiBDzDnya3ZERrtcHHUZdRipMsy1uBs/getChatMembersCount?chat_id=-1002221437349`);
       const data = await response.json();
       return data.result; // عدد الأعضاء
     } catch (error) {
