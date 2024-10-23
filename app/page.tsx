@@ -68,7 +68,7 @@ export default function Home() {
           <div className="alert" role="alert" style={{ color: 'white', border: '1px solid white' }}>
             <h4 className="alert-heading">!لقد تم حظرك</h4>
             <p> بسبب: {currentUserBan?.reason}</p>
-            <p>للتواصل مع المسؤول، يمكنك زيارة <a href="https://t.me/kharwaydo" target="_blank" className="text-blue-500">البوت هنا</a>.</p>
+            <p>للتواصل مع المسؤول، <a href="https://t.me/bndusrhx_bot" target="_blank" className="text-blue-500"> هنا</a>.</p>
           </div>
         </div>
       </main>
