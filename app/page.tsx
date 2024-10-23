@@ -61,17 +61,20 @@ export default function Home() {
   };
 
   if (isBanned) {
-    return (
-      <main className="p-4 bg-gray-900 min-h-screen flex items-center justify-center">
-        <div className="text-center">
-          <img src="/icon8.png" alt="Banned Icon" className="mx-auto mb-4 w-32 h-32" />
-          <div className="alert" role="alert" style={{ color: 'white', border: '1px solid white' }}>
-            <h4 className="alert-heading">!لقد تم حظرك</h4>
-            <p> بسبب: {currentUserBan?.reason}</p>
-            <p>للتواصل مع المسؤول، <a href="https://t.me/bndusrhx_bot" target="_blank" className="text-blue-500"> هنا</a>.</p>
-          </div>
+  return (
+    <main className="p-4 bg-gray-900 min-h-screen flex items-center justify-center">
+      <div className="text-center">
+        <img src="/icon8.png" alt="Banned Icon" className="mx-auto mb-4 w-32 h-32" />
+        <div className="alert" role="alert" style={{ color: 'white', border: '1px solid white' }}>
+          <h4 className="alert-heading">!لقد تم حظرك</h4>
+          <p style={{ color: 'yellow' }}>سبب: {currentUserBan?.reason}</p>
+          <p>للتواصل مع المسؤول، <a href="https://t.me/bndusrhx_bot" target="_blank" className="text-blue-500"> هنا</a>.</p>
         </div>
-      </main>
+      </div>
+    </main>
+  );
+}
+
     );
   }
 
