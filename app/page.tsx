@@ -2,6 +2,7 @@
 
 import WebApp from '@twa-dev/sdk'
 import { useEffect, useState } from 'react'
+import './styles.css'; // استيراد ملف CSS
 
 // تعريف واجهة بيانات المستخدم
 interface UserData {
