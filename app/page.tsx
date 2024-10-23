@@ -17,8 +17,8 @@ interface UserData {
 
 // قائمة المستخدمين المحظورين بناءً على اسم المستخدم أو ID مع سبب الحظر
 const bannedUsers = [
-  { id: 1, username: 'Yrqr52', reason: 'محتوى غير لائق' },
-  { id: 2, username: 'User2', reason: 'إساءة استخدام المنصة' },
+  { id: 1, username: 'Yrqr52', reason: 'انت تحاول استخدام ادوات المسؤول بدون صلاحية' },
+  { id: 2, username: 'amineboss1', reason: 'ماكش خدام هههه' },
 ];
 
 // قائمة المسؤولين بناءً على اسم المستخدم والدور
