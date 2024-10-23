@@ -2,7 +2,7 @@
 
 import WebApp from '@twa-dev/sdk'
 import { useEffect, useState } from 'react'
-import './styles.css';
+import './styles.css'; // استيراد ملف CSS
 
 // تعريف واجهة بيانات المستخدم
 interface UserData {
@@ -19,8 +19,8 @@ interface UserData {
 const bannedUsers = [
   { id: 1, username: 'Yrqr52', reason: 'انت تحاول استخدام ادوات المسؤول بدون صلاحية' },
   { id: 2, username: 'amineboss1', reason: 'ماكش خدام هههه' },
-  { id: 3, username: 'Sanji7zy', reason: 'test test test' },
-  { id: 4, username: 'Seidmmf', reason: 'قرر النظام ان يڨوفينديك هههه' },
+  { id: 3, username: 'Sanji7zy' , reason: 'test test test' },
+  { id: 4, username: 'Seidmmf' , reason: 'قرر النظام ان يڡوفينديك هههه' },
 ];
 
 // قائمة المسؤولين بناءً على اسم المستخدم والدور
@@ -32,60 +32,20 @@ const admins = [
 
 export default function Home() {
   const [userData, setUserData] = useState<UserData | null>(null);
-  const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [isMenuOpen, setIsMenuOpen] = useState(false); // لحالة القائمة
   const [isAdminModalOpen, setIsAdminModalOpen] = useState(false);
   const [isBanListModalOpen, setIsBanListModalOpen] = useState(false);
-  const [isSpeakerModalOpen, setIsSpeakerModalOpen] = useState(false); // لحالة نافذة مكبر الصوت
-  const [message, setMessage] = useState(''); // لحفظ الرسالة المدخلة
-  const [memberCount, setMemberCount] = useState(0); // لحفظ عدد الأعضاء
+  const [memberCount, setMemberCount] = useState<number | null>(null); // لحفظ عدد الأعضاء
 
   useEffect(() => {
     if (WebApp.initDataUnsafe.user) {
+      console.log('User data loaded:', WebApp.initDataUnsafe.user);
       setUserData({
         ...WebApp.initDataUnsafe.user,
         balance: 5000,
       } as UserData);
     }
-    fetchMemberCount(); // جلب عدد الأعضاء عند تحميل الصفحة
   }, []);
-
-  const fetchMemberCount = async () => {
-    try {
-      const response = await fetch(`https://api.telegram.org/bot7409408890:AAFdKiBDzDnya3ZERrtcHHUZdRipMsy1uBs/getChatMembersCount?chat_id=-1002221437349`);
-      const data = await response.json();
-      setMemberCount(data.result); // تحديث عدد الأعضاء
-    } catch (error) {
-      console.error("Error fetching member count:", error);
-    }
-  };
-
-  const sendMessageToChannel = async () => {
-    if (!message) return; // التحقق من وجود رسالة
-
-    try {
-      const response = await fetch(`https://api.telegram.org/bot7409408890:AAFdKiBDzDnya3ZERrtcHHUZdRipMsy1uBs/sendMessage`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({
-          chat_id: '-1002221437349',
-          text: message,
-        }),
-      });
-
-      const data = await response.json();
-      if (data.ok) {
-        alert("Message sent successfully!");
-        setMessage(''); // مسح صندوق الرسالة بعد الإرسال
-        closeSpeakerModal(); // إغلاق النافذة بعد الإرسال
-      } else {
-        alert("Failed to send message.");
-      }
-    } catch (error) {
-      console.error("Error sending message:", error);
-    }
-  };
 
   const currentUserBan = userData && bannedUsers.find(user => user.username === (userData.username || '') || user.id === userData.id);
   const isBanned = currentUserBan !== undefined;
@@ -99,17 +59,26 @@ export default function Home() {
     setIsBanListModalOpen(!isBanListModalOpen);
   };
 
-  const toggleSpeakerModal = () => {
-    setIsSpeakerModalOpen(!isSpeakerModalOpen); // فتح/إغلاق نافذة مكبر الصوت
-  };
-
-  const closeSpeakerModal = () => {
-    setIsSpeakerModalOpen(false); // إغلاق نافذة مكبر الصوت
-    setMessage(''); // مسح صندوق الرسالة عند الإغلاق
-  };
-
   const toggleMenu = () => {
     setIsMenuOpen(!isMenuOpen);
+  };
+
+  // وظيفة لجلب عدد الأعضاء من القناة
+  const getChannelMembersCount = async () => {
+    try {
+      const response = await fetch(`https://api.telegram.org/bot<YOUR_BOT_TOKEN>/getChatMembersCount?chat_id=-1002221437349`);
+      const data = await response.json();
+      return data.result; // عدد الأعضاء
+    } catch (error) {
+      console.error("Error fetching member count:", error);
+      return 0; // قيمة افتراضية في حال حدوث خطأ
+    }
+  };
+
+  const handleMemberCountClick = async () => {
+    const count = await getChannelMembersCount();
+    setMemberCount(count);
+    alert(`عدد الأعضاء في القناة: ${count}`);
   };
 
   if (isBanned) {
@@ -118,8 +87,9 @@ export default function Home() {
         <div className="text-center">
           <img src="/icon8.png" alt="Banned Icon" className="mx-auto mb-4 w-32 h-32" />
           <div className="alert" role="alert" style={{ color: 'white', border: '1px solid white' }}>
-            <h4 className="alert-heading">!تم حظرك</h4>
-            <p>{currentUserBan?.reason}</p>
+            <h4 className="alert-heading">!لقد تم حظرك</h4>
+            <p style={{ color: 'yellow' }}>سبب: {currentUserBan?.reason}</p>
+            <p>للتواصل مع المسؤول، <a href="https://t.me/bndusrhx_bot" target="_blank" className="text-blue-500"> هنا</a>.</p>
           </div>
         </div>
       </main>
@@ -127,81 +97,135 @@ export default function Home() {
   }
 
   return (
-    <main className="p-4 bg-gray-900 min-h-screen flex flex-col">
-      <header className="flex justify-between items-center">
-        <h1 className="text-2xl text-white">مرحباً {userData?.first_name}</h1>
-        <button className="text-white" onClick={toggleMenu}>☰</button>
-      </header>
-
-      <div className="flex-grow flex items-center justify-center">
-        <div className="text-white">
-          <h2>عدد الأعضاء: {memberCount}</h2>
-          {isAdmin && (
-            <div>
-              <button onClick={toggleAdminModal} className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded mt-4">
-                إدارة
-              </button>
-            </div>
-          )}
-        </div>
-      </div>
-
-      {/* القائمة المنسدلة */}
-      {isMenuOpen && (
-        <div className="absolute top-16 right-4 bg-gray-800 text-white rounded shadow-lg p-4">
-          <h3 className="text-lg font-bold">القائمة</h3>
-          <ul>
-            <li onClick={toggleAdminModal} className="cursor-pointer">إدارة المستخدمين</li>
-            <li onClick={toggleBanListModal} className="cursor-pointer">قائمة المحظورين</li>
-            <li onClick={toggleSpeakerModal} className="cursor-pointer">🔊 Speaker</li> {/* الأيقونة الجديدة */}
-            <li onClick={toggleMenu} className="cursor-pointer">إغلاق القائمة</li>
-          </ul>
-        </div>
-      )}
-      
-      {/* نافذة مكبر الصوت */}
-      {isSpeakerModalOpen && (
-        <div className="modal bg-gray-800 p-4 rounded">
-          <h2 className="text-white">إرسال رسالة إلى القناة</h2>
-          <textarea 
-            value={message} 
-            onChange={(e) => setMessage(e.target.value)} 
-            className="border rounded p-2 w-full mt-2" 
-            placeholder="اكتب رسالتك هنا..." 
+    <main className="p-4 bg-gray-900 min-h-screen">
+      {userData ? (
+        <div className="flex items-center space-x-4 absolute top-4 left-4 bg-black rounded-lg p-4 shadow-xl border border-gray-700">
+          <img
+            src={isAdmin ? '/icon1.png' : '/icon.png'}
+            alt="User Avatar"
+            className="w-16 h-16 rounded-full border-2 border-green-500 shadow-lg"
           />
-          <button 
-            onClick={sendMessageToChannel} 
-            className="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded mt-2"
-          >
-            إرسال
-          </button>
-          <button 
-            onClick={closeSpeakerModal} 
-            className="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded mt-2 ml-2"
-          >
-            إغلاق
-          </button>
+          <div className="text-white">
+            <h1 className="text-lg font-bold flex items-center">
+              {userData.first_name} {userData.last_name || ''}
+              {isAdmin && (
+                <span className="ml-2 px-2 py-1 bg-green-500 text-white text-sm rounded">
+                  admin
+                </span>
+              )}
+            </h1>
+            <div className="flex items-center mt-2">
+              <img
+                src="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/icons/wallet2.svg" 
+                alt="Wallet Icon"
+                className="w-6 h-6 mr-2"
+                style={{ filter: 'invert(100%)' }}
+              />
+              <span className="text-lg font-bold">{userData.balance} points</span>
+            </div>
+          </div>
+        </div>
+      ) : (
+        <div className="text-white">Loading...</div>
+      )}
+
+      {/* Menu Icon (تظهر فقط للمسؤولين) */}
+      {isAdmin && (
+        <div className="fixed top-4 right-4 space-x-2 flex">
+          <div className="cursor-pointer" onClick={toggleMenu}>
+            <img
+              src="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.5.0/icons/gear.svg"
+              alt="Settings"
+              className="w-8 h-8"
+              style={{ filter: 'invert(100%)' }}
+            />
+          </div>
         </div>
       )}
 
-      {/* نافذة إدارة المستخدمين */}
-      {isAdminModalOpen && (
-        <div className="modal">
-          <h2>إدارة المستخدمين</h2>
-          <button onClick={toggleAdminModal} className="close">إغلاق</button>
-        </div>
-      )}
-
-      {/* نافذة قائمة المحظورين */}
-      {isBanListModalOpen && (
-        <div className="modal">
-          <h2>قائمة المحظورين</h2>
-          <ul>
-            {bannedUsers.map(user => (
-              <li key={user.id}>{user.username} - {user.reason}</li>
-            ))}
+      {/* Menu */}
+      {isMenuOpen && (
+        <div className="fixed top-12 right-4 bg-gray-500 p-4 rounded-lg shadow-lg text-white">
+          <ul className="space-y-4">
+            <li className="cursor-pointer" onClick={toggleAdminModal}>
+              <img
+                src="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.5.0/icons/tree.svg"
+                alt="Admin List"
+                className="w-6 h-6 mr-2 inline"
+              />
+              Admin List
+            </li>
+            <li className="cursor-pointer" onClick={toggleBanListModal}>
+              <img
+                src="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.5.0/icons/person-x.svg"
+                alt="Ban List"
+                className="w-6 h-6 mr-2 inline"
+              />
+              Banned List
+            </li>
+            <li className="cursor-pointer" onClick={handleMemberCountClick}>
+              <img
+                src="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.5.0/icons/person-lines-fill.svg"
+                alt="Member Count"
+                className="w-6 h-6 mr-2 inline"
+              />
+              عدد الأعضاء
+            </li>
+            <li className="cursor-pointer">
+              <a href="https://t.me/your_channel" target="_blank">
+                <img
+                  src="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.5.0/icons/telegram.svg"
+                  alt="Telegram"
+                  className="w-6 h-6 mr-2 inline"
+                />
+                Telegram
+              </a>
+            </li>
           </ul>
-          <button onClick={toggleBanListModal} className="close">إغلاق</button>
+        </div>
+      )}
+
+      {/* Admin Modal */}
+      {isAdminModalOpen && (
+        <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-75">
+          <div className="bg-gray-800 p-6 rounded-lg shadow-lg max-w-sm w-full text-white">
+            <h2 className="text-lg font-bold mb-4">Admins List</h2>
+            <ul>
+              {admins.map((admin, index) => (
+                <li key={index} className="mb-2">
+                  {admin.name} - {admin.role}
+                </li>
+              ))}
+            </ul>
+            <button
+              className="mt-4 w-full bg-red-500 hover:bg-red-700 text-white py-2 rounded"
+              onClick={toggleAdminModal}
+            >
+              اغلاق
+            </button>
+          </div>
+        </div>
+      )}
+
+      {/* Ban List Modal */}
+      {isBanListModalOpen && (
+        <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-75">
+          <div className="bg-gray-800 p-6 rounded-lg shadow-lg max-w-sm w-full text-white">
+            <h2 className="text-lg font-bold mb-4">Banned Users List</h2>
+            <ul>
+              {bannedUsers.map((bannedUser, index) => (
+                <li key={index} className="mb-2">
+                  {bannedUser.username} - سبب: {bannedUser.reason}
+                </li>
+              ))}
+            </ul>
+            <button
+              className="mt-4 w-full bg-red-500 hover:bg-red-700 text-white py-2 rounded"
+              onClick={toggleBanListModal}
+            >
+              اغلاق
+            </button>
+          </div>
         </div>
       )}
     </main>
