@@ -18,7 +18,6 @@ interface UserData {
 const bannedUsers = [
   { id: 1, username: 'amineboss1' },
   { id: 2, username: '' },
-  // يمكن إضافة المزيد من المستخدمين المحظورين هنا
 ];
 
 // قائمة المسؤولين بناءً على اسم المستخدم والدور
@@ -30,6 +29,7 @@ const admins = [
 
 export default function Home() {
   const [userData, setUserData] = useState<UserData | null>(null);
+  const [isMenuOpen, setIsMenuOpen] = useState(false); // لحالة القائمة
   const [isAdminModalOpen, setIsAdminModalOpen] = useState(false);
   const [isBanListModalOpen, setIsBanListModalOpen] = useState(false);
 
@@ -43,13 +43,9 @@ export default function Home() {
     }
   }, []);
 
-  // تحقق مما إذا كان المستخدم محظورًا بناءً على الـ username أو الـ ID
   const isBanned = userData && bannedUsers.some(user => user.username === (userData.username || '') || user.id === userData.id);
-
-  // تحقق مما إذا كان المستخدم إداريًا بناءً على اسم المستخدم
   const isAdmin = userData && admins.some(admin => admin.name === (userData.username || ''));
 
-  // تبديل حالة النافذة المنبثقة
   const toggleAdminModal = () => {
     setIsAdminModalOpen(!isAdminModalOpen);
   };
@@ -58,8 +54,11 @@ export default function Home() {
     setIsBanListModalOpen(!isBanListModalOpen);
   };
 
+  const toggleMenu = () => {
+    setIsMenuOpen(!isMenuOpen);
+  };
+
   if (isBanned) {
-    // عرض الصفحة الخاصة بالمستخدمين المحظورين
     return (
       <main className="p-4 bg-gray-900 min-h-screen flex items-center justify-center">
         <div className="text-center">
@@ -106,24 +105,49 @@ export default function Home() {
         <div className="text-white">Loading...</div>
       )}
 
-      {isAdmin && (
-        <div className="fixed top-4 right-4 space-x-2 flex">
-          <div className="cursor-pointer" onClick={toggleAdminModal}>
-            <img
-              src="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.5.0/icons/tree.svg"
-              alt="Settings"
-              className="w-8 h-8"
-              style={{ filter: 'invert(100%)', color: '#00BFFF' }}
-            />
-          </div>
-          <div className="cursor-pointer" onClick={toggleBanListModal}>
-            <img
-              src="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.5.0/icons/person-x.svg"
-              alt="Ban List"
-              className="w-8 h-8"
-              style={{ filter: 'invert(100%)', color: 'red' }}
-            />
-          </div>
+      {/* Menu Icon */}
+      <div className="fixed top-4 right-4 space-x-2 flex">
+        <div className="cursor-pointer" onClick={toggleMenu}>
+          <img
+            src="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.5.0/icons/gear.svg"
+            alt="Settings"
+            className="w-8 h-8"
+            style={{ filter: 'invert(100%)' }}
+          />
+        </div>
+      </div>
+
+      {/* Menu */}
+      {isMenuOpen && (
+        <div className="fixed top-12 right-4 bg-gray-800 p-4 rounded-lg shadow-lg text-white">
+          <ul className="space-y-4">
+            <li className="cursor-pointer" onClick={toggleAdminModal}>
+              <img
+                src="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.5.0/icons/tree.svg"
+                alt="Admin List"
+                className="w-6 h-6 mr-2 inline"
+              />
+              Admin List
+            </li>
+            <li className="cursor-pointer" onClick={toggleBanListModal}>
+              <img
+                src="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.5.0/icons/person-x.svg"
+                alt="Ban List"
+                className="w-6 h-6 mr-2 inline"
+              />
+              Banned List
+            </li>
+            <li className="cursor-pointer">
+              <a href="https://t.me/your_channel" target="_blank">
+                <img
+                  src="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.5.0/icons/telegram.svg"
+                  alt="Telegram"
+                  className="w-6 h-6 mr-2 inline"
+                />
+                Telegram
+              </a>
+            </li>
+          </ul>
         </div>
       )}
 
