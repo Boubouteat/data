@@ -1,88 +1,71 @@
-.flex {
+/* ملف styles.css */
+
+/* الخلفية واللون الأساسي للـ main */
+main {
+  background-color: #1a1a1a;
+  color: #ffffff;
+  font-family: 'Arial', sans-serif;
+}
+
+/* تنسيق الأزرار */
+button {
+  background-color: #007bff;
+  color: white;
+  padding: 10px 20px;
+  border-radius: 5px;
+  border: none;
+  cursor: pointer;
+  font-size: 1rem;
+}
+
+/* تعديل شكل الأزرار عند تمرير المؤشر */
+button:hover {
+  background-color: #0056b3;
+}
+
+/* تنسيق الـ Modal (النوافذ المنبثقة) */
+.fixed {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
   display: flex;
+  justify-content: center;
   align-items: center;
 }
 
-.space-x-2 { /* تباعد أقل لتوزيع أفضل */
-  gap: 0.5rem;
+.bg-gray-800 {
+  background-color: #333;
 }
 
-.absolute {
-  position: absolute;
-}
-
-.top-4 {
-  top: 1rem;
-}
-
-.left-4 {
-  left: 1rem;
-}
-
-.bg-black {
-  background-color: black;
-}
-
-.rounded-lg {
-  border-radius: 0.75rem; /* زاوية أكثر انحناءً */
-}
-
-.p-3 { /* تصغير الحواف قليلاً */
-  padding: 0.75rem;
-}
-
-.shadow-xl {
-  box-shadow: 0 6px 14px rgba(0, 0, 0, 0.2); /* ظلال ناعمة وأكثر دقة */
-}
-
-.border {
-  border-width: 1px;
-}
-
-.border-gray-700 {
-  border-color: #374151;
-}
-
-.w-12 { /* تصغير الحجم لجعل التصميم أكثر دقة */
-  width: 3rem;
-}
-
-.h-12 { /* تصغير الطول */
-  height: 3rem;
-}
-
-.rounded-full {
-  border-radius: 9999px;
-}
-
-.border-green-500 {
-  border-color: #10b981;
-}
-
-.shadow-lg {
-  box-shadow: 0 8px 12px rgba(0, 0, 0, 0.15);
-}
-
-.text-green-500 {
-  color: #10b981;
+.bg-opacity-75 {
+  opacity: 0.75;
 }
 
 .text-white {
-  color: #fff;
+  color: #ffffff;
 }
 
-.text-xl { /* تصغير حجم الخط قليلاً */
-  font-size: 0.6rem;
+.p-4, .p-6 {
+  padding: 16px;
 }
 
-.font-bold {
-  font-weight: 700;
+.rounded-lg {
+  border-radius: 10px;
 }
 
-.transition-all {
-  transition: all 0.3s ease; /* تأثير انتقال سلس */
+.shadow-lg {
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
 }
 
-.hover:shadow-2xl:hover {
-  box-shadow: 0 12px 20px rgba(0, 0, 0, 0.25); /* تأثير ظل عند التمرير */
+/* إضافة نمط متحرك للضوء */
+.blinking-light {
+  animation: blinking 1s infinite;
+}
+
+@keyframes blinking {
+  0% { background-color: red; }
+  50% { background-color: transparent; }
+  100% { background-color: red; }
 }
