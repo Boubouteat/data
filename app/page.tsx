@@ -17,7 +17,7 @@ interface UserData {
 
 // قائمة المستخدمين المحظورين بناءً على اسم المستخدم أو ID
 const bannedUsers = [
-  { id: 1, username: 'amineboss1' },
+  { id: 1, username: 'Yrqr52' },
   { id: 2, username: '' },
 ];
 
@@ -122,7 +122,7 @@ export default function Home() {
 
       {/* Menu */}
       {isMenuOpen && (
-        <div className="fixed top-12 right-4 bg-blue-800 p-4 rounded-lg shadow-lg text-white">
+        <div className="fixed top-12 right-4 bg-gray-500 p-4 rounded-lg shadow-lg text-white">
           <ul className="space-y-4">
             <li className="cursor-pointer" onClick={toggleAdminModal}>
               <img
