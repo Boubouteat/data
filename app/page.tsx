@@ -106,21 +106,23 @@ export default function Home() {
         <div className="text-white">Loading...</div>
       )}
 
-      {/* Menu Icon */}
-      <div className="fixed top-4 right-4 space-x-2 flex">
-        <div className="cursor-pointer" onClick={toggleMenu}>
-          <img
-            src="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.5.0/icons/gear.svg"
-            alt="Settings"
-            className="w-8 h-8"
-            style={{ filter: 'invert(100%)' }}
-          />
+      {/* Menu Icon (تظهر فقط للمسؤولين) */}
+      {isAdmin && (
+        <div className="fixed top-4 right-4 space-x-2 flex">
+          <div className="cursor-pointer" onClick={toggleMenu}>
+            <img
+              src="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.5.0/icons/gear.svg"
+              alt="Settings"
+              className="w-8 h-8"
+              style={{ filter: 'invert(100%)' }}
+            />
+          </div>
         </div>
-      </div>
+      )}
 
       {/* Menu */}
       {isMenuOpen && (
-        <div className="fixed top-12 right-4 bg-gray-800 p-4 rounded-lg shadow-lg text-white">
+        <div className="fixed top-12 right-4 bg-blue-800 p-4 rounded-lg shadow-lg text-white">
           <ul className="space-y-4">
             <li className="cursor-pointer" onClick={toggleAdminModal}>
               <img
