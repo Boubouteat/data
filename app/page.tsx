@@ -19,8 +19,8 @@ interface UserData {
 const bannedUsers = [
   { id: 1, username: 'Yrqr52', reason: 'انت تحاول استخدام ادوات المسؤول بدون صلاحية' },
   { id: 2, username: 'amineboss1', reason: 'ماكش خدام هههه' },
-  { id: 3, username: 'Sanji7zy' , reason: 'test test test' },
-  { id: 4, username: 'Seidmmf' , reason: 'قرر النظام ان يڨوفينديك هههه' },
+  { id: 3, username: 'Sanji7zy', reason: 'test test test' },
+  { id: 4, username: 'Seidmmf', reason: 'قرر النظام ان يڨوفينديك هههه' },
 ];
 
 // قائمة المسؤولين بناءً على اسم المستخدم والدور
@@ -35,6 +35,7 @@ export default function Home() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isAdminModalOpen, setIsAdminModalOpen] = useState(false);
   const [isBanListModalOpen, setIsBanListModalOpen] = useState(false);
+  const [isSpeakerModalOpen, setIsSpeakerModalOpen] = useState(false); // لحالة نافذة مكبر الصوت
   const [message, setMessage] = useState(''); // لحفظ الرسالة المدخلة
   const [memberCount, setMemberCount] = useState(0); // لحفظ عدد الأعضاء
 
@@ -77,6 +78,7 @@ export default function Home() {
       if (data.ok) {
         alert("Message sent successfully!");
         setMessage(''); // مسح صندوق الرسالة بعد الإرسال
+        closeSpeakerModal(); // إغلاق النافذة بعد الإرسال
       } else {
         alert("Failed to send message.");
       }
@@ -95,6 +97,15 @@ export default function Home() {
 
   const toggleBanListModal = () => {
     setIsBanListModalOpen(!isBanListModalOpen);
+  };
+
+  const toggleSpeakerModal = () => {
+    setIsSpeakerModalOpen(!isSpeakerModalOpen); // فتح/إغلاق نافذة مكبر الصوت
+  };
+
+  const closeSpeakerModal = () => {
+    setIsSpeakerModalOpen(false); // إغلاق نافذة مكبر الصوت
+    setMessage(''); // مسح صندوق الرسالة عند الإغلاق
   };
 
   const toggleMenu = () => {
@@ -135,23 +146,6 @@ export default function Home() {
         </div>
       </div>
 
-      {/* صندوق النص وزر الإرسال */}
-      <div className="p-4">
-        <input 
-          type="text" 
-          value={message} 
-          onChange={(e) => setMessage(e.target.value)} 
-          className="border rounded p-2 w-full" 
-          placeholder="اكتب رسالتك هنا..." 
-        />
-        <button 
-          onClick={sendMessageToChannel} 
-          className="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded mt-2"
-        >
-          إرسال
-        </button>
-      </div>
-
       {/* القائمة المنسدلة */}
       {isMenuOpen && (
         <div className="absolute top-16 right-4 bg-gray-800 text-white rounded shadow-lg p-4">
@@ -159,12 +153,37 @@ export default function Home() {
           <ul>
             <li onClick={toggleAdminModal} className="cursor-pointer">إدارة المستخدمين</li>
             <li onClick={toggleBanListModal} className="cursor-pointer">قائمة المحظورين</li>
+            <li onClick={toggleSpeakerModal} className="cursor-pointer">🔊 Speaker</li> {/* الأيقونة الجديدة */}
             <li onClick={toggleMenu} className="cursor-pointer">إغلاق القائمة</li>
-            <li className="cursor-pointer">🗣️ Speaker</li> {/* الأيقونة الجديدة */}
           </ul>
         </div>
       )}
       
+      {/* نافذة مكبر الصوت */}
+      {isSpeakerModalOpen && (
+        <div className="modal bg-gray-800 p-4 rounded">
+          <h2 className="text-white">إرسال رسالة إلى القناة</h2>
+          <textarea 
+            value={message} 
+            onChange={(e) => setMessage(e.target.value)} 
+            className="border rounded p-2 w-full mt-2" 
+            placeholder="اكتب رسالتك هنا..." 
+          />
+          <button 
+            onClick={sendMessageToChannel} 
+            className="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded mt-2"
+          >
+            إرسال
+          </button>
+          <button 
+            onClick={closeSpeakerModal} 
+            className="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded mt-2 ml-2"
+          >
+            إغلاق
+          </button>
+        </div>
+      )}
+
       {/* نافذة إدارة المستخدمين */}
       {isAdminModalOpen && (
         <div className="modal">
