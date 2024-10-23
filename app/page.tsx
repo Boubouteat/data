@@ -15,10 +15,10 @@ interface UserData {
   balance: number;
 }
 
-// قائمة المستخدمين المحظورين بناءً على اسم المستخدم أو ID
+// قائمة المستخدمين المحظورين مع أسباب الحظر
 const bannedUsers = [
-  { id: 1, username: 'Yrqr52' },
-  { id: 2, username: '' },
+  { id: 1, username: 'Yrqr52', banReason: 'مخالفة شروط الاستخدام.' },
+  { id: 2, username: 'testuser', banReason: 'نشاط مشبوه.' },
 ];
 
 // قائمة المسؤولين بناءً على اسم المستخدم والدور
@@ -44,7 +44,7 @@ export default function Home() {
     }
   }, []);
 
-  const isBanned = userData && bannedUsers.some(user => user.username === (userData.username || '') || user.id === userData.id);
+  const bannedUser = userData && bannedUsers.find(user => user.username === (userData.username || '') || user.id === userData.id);
   const isAdmin = userData && admins.some(admin => admin.name === (userData.username || ''));
 
   const toggleAdminModal = () => {
@@ -59,14 +59,18 @@ export default function Home() {
     setIsMenuOpen(!isMenuOpen);
   };
 
-  if (isBanned) {
+  if (bannedUser) {
     return (
       <main className="p-4 bg-gray-900 min-h-screen flex items-center justify-center">
         <div className="text-center">
           <img src="/icon8.png" alt="Banned Icon" className="mx-auto mb-4 w-32 h-32" />
-          <div className="alert" role="alert" style={{ color: 'red', border: '1px solid red' }}>
+          <div className="alert alert-info" role="alert">
             <h4 className="alert-heading">أنت محظور</h4>
-            <p>لقد تم حظرك من الوصول إلى هذه الصفحة. إذا كنت تعتقد أن هذا حدث عن طريق الخطأ، الرجاء الاتصال بالمسؤول.</p>
+            <p>{bannedUser.banReason}</p>
+            <p className="mb-0">
+              لمزيد من المعلومات، يمكنك التواصل مع الدعم عبر
+              <a href="https://t.me/kharwaydo" className="alert-link">بوت @kharwaydo</a>.
+            </p>
           </div>
         </div>
       </main>
