@@ -35,16 +35,73 @@ export default function Home() {
   const [isMenuOpen, setIsMenuOpen] = useState(false); // لحالة القائمة
   const [isAdminModalOpen, setIsAdminModalOpen] = useState(false);
   const [isBanListModalOpen, setIsBanListModalOpen] = useState(false);
+  
+  // حالات الزراعة
+  const [isFarming, setIsFarming] = useState(false);
+  const [farmingTime, setFarmingTime] = useState(0); // الوقت المتبقي
+  const [intervalId, setIntervalId] = useState<number | null>(null); // لحفظ معرف المؤقت
 
   useEffect(() => {
-    if (WebApp.initDataUnsafe.user) {
+    const storedData = localStorage.getItem('userData');
+    if (storedData) {
+      const parsedData = JSON.parse(storedData);
+      setUserData(parsedData);
+    } else if (WebApp.initDataUnsafe.user) {
       console.log('User data loaded:', WebApp.initDataUnsafe.user);
-      setUserData({
+      const initialUserData = {
         ...WebApp.initDataUnsafe.user,
         balance: 5000,
-      } as UserData);
+      } as UserData;
+      setUserData(initialUserData);
+      localStorage.setItem('userData', JSON.stringify(initialUserData));
+    }
+
+    // استرجاع حالة الزراعة من localStorage
+    const farmingData = localStorage.getItem('farmingData');
+    if (farmingData) {
+      const { isFarming, farmingTime } = JSON.parse(farmingData);
+      setIsFarming(isFarming);
+      setFarmingTime(farmingTime);
     }
   }, []);
+
+  useEffect(() => {
+    // إعداد عداد الوقت
+    if (isFarming && farmingTime > 0) {
+      const id = setInterval(() => {
+        setFarmingTime(prev => {
+          if (prev <= 1) {
+            clearInterval(id);
+            setIsFarming(false);
+            setFarmingTime(0);
+            return 0;
+          }
+          return prev - 1;
+        });
+      }, 1000);
+      setIntervalId(id);
+    }
+    return () => {
+      if (intervalId) clearInterval(intervalId);
+    };
+  }, [isFarming, farmingTime]);
+
+  const startFarming = () => {
+    setIsFarming(true);
+    setFarmingTime(7 * 60 * 60); // 7 ساعات
+    localStorage.setItem('farmingData', JSON.stringify({ isFarming: true, farmingTime: 7 * 60 * 60 }));
+  };
+
+  const claimPoints = () => {
+    if (userData) {
+      const updatedBalance = userData.balance + 50;
+      setUserData({ ...userData, balance: updatedBalance });
+      localStorage.setItem('userData', JSON.stringify({ ...userData, balance: updatedBalance }));
+      setIsFarming(false);
+      setFarmingTime(0);
+      localStorage.removeItem('farmingData'); // مسح بيانات الزراعة بعد المطالبة
+    }
+  };
 
   const currentUserBan = userData && bannedUsers.find(user => user.username === (userData.username || '') || user.id === userData.id);
   const isBanned = currentUserBan !== undefined;
@@ -78,7 +135,7 @@ export default function Home() {
   }
 
   return (
-    <main className="p-4 bg-gray-900 min-h-screen">
+    <main className="p-4 bg-gray-900 min-h-screen flex flex-col items-center justify-center">
       {userData ? (
         <div className="flex items-center space-x-4 absolute top-4 left-4 bg-black rounded-lg p-4 shadow-xl border border-gray-700">
           <img
@@ -144,59 +201,78 @@ export default function Home() {
               />
               Banned List
             </li>
-            <li className="cursor-pointer">
-              <a href="https://t.me/your_channel" target="_blank">
-                <img
-                  src="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.5.0/icons/telegram.svg"
-                  alt="Telegram"
-                  className="w-6 h-6 mr-2 inline"
-                />
-                Telegram
-              </a>
-            </li>
           </ul>
         </div>
       )}
 
-      {/* Admin Modal */}
-      {isAdminModalOpen && (
-        <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-75">
-          <div className="bg-gray-800 p-6 rounded-lg shadow-lg max-w-sm w-full text-white">
-            <h2 className="text-lg font-bold mb-4">Admins List</h2>
+      {/* زر البدء في الزراعة */}
+      <div className="flex flex-col items-center mt-8">
+        <img
+          src="/farming.gif" // إضافة صورة متحركة هنا
+          alt="Farming Animation"
+          className="w-64 h-64"
+        />
+        {!isFarming ? (
+          <button
+            className="bg-green-500 text-white py-2 px-4 rounded-lg mt-4 hover:bg-green-600"
+            onClick={startFarming}
+          >
+            Start Farming
+          </button>
+        ) : (
+          <div className="mt-4 text-white">
+            <p>Farming Time Remaining: {Math.floor(farmingTime / 3600)}:{Math.floor((farmingTime % 3600) / 60).toString().padStart(2, '0')}:{(farmingTime % 60).toString().padStart(2, '0')}</p>
+            {farmingTime === 0 && (
+              <button
+                className="bg-blue-500 text-white py-2 px-4 rounded-lg mt-4 hover:bg-blue-600"
+                onClick={claimPoints}
+              >
+                Claim 50 Points
+              </button>
+            )}
+          </div>
+        )}
+      </div>
+
+      {/* نافذة قائمة الحظر */}
+      {isBanListModalOpen && (
+        <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50">
+          <div className="bg-white rounded-lg p-6 text-black shadow-lg">
+            <h2 className="text-xl font-bold mb-4">Banned Users</h2>
             <ul>
-              {admins.map((admin, index) => (
-                <li key={index} className="mb-2">
-                  {admin.name} - {admin.role}
+              {bannedUsers.map(user => (
+                <li key={user.id} className="mb-2">
+                  {user.username}: {user.reason}
                 </li>
               ))}
             </ul>
             <button
-              className="mt-4 w-full bg-red-500 hover:bg-red-700 text-white py-2 rounded"
-              onClick={toggleAdminModal}
+              className="mt-4 bg-red-500 text-white py-2 px-4 rounded hover:bg-red-600"
+              onClick={toggleBanListModal}
             >
-              اغلاق
+              Close
             </button>
           </div>
         </div>
       )}
 
-      {/* Ban List Modal */}
-      {isBanListModalOpen && (
-        <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-75">
-          <div className="bg-gray-800 p-6 rounded-lg shadow-lg max-w-sm w-full text-white">
-            <h2 className="text-lg font-bold mb-4">Banned Users</h2>
+      {/* نافذة قائمة المسؤولين */}
+      {isAdminModalOpen && (
+        <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50">
+          <div className="bg-white rounded-lg p-6 text-black shadow-lg">
+            <h2 className="text-xl font-bold mb-4">Admin List</h2>
             <ul>
-              {bannedUsers.map((user, index) => (
-                <li key={index} className="mb-2">
-                  {user.username || `User ID: ${user.id}`} - سبب الحظر: {user.reason}
+              {admins.map(admin => (
+                <li key={admin.name} className="mb-2">
+                  {admin.name} - {admin.role}
                 </li>
               ))}
             </ul>
             <button
-              className="mt-4 w-full bg-red-500 hover:bg-red-700 text-white py-2 rounded"
-              onClick={toggleBanListModal}
+              className="mt-4 bg-red-500 text-white py-2 px-4 rounded hover:bg-red-600"
+              onClick={toggleAdminModal}
             >
-              اغلاق
+              Close
             </button>
           </div>
         </div>
