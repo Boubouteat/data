@@ -1,8 +1,7 @@
-'use client'
-
-import WebApp from '@twa-dev/sdk'
-import { useEffect, useState } from 'react'
+import React, { useEffect, useState } from 'react';
+import WebApp from '@twa-dev/sdk';
 import './styles.css'; // استيراد ملف CSS
+import 'bootstrap/dist/css/bootstrap.min.css'; // استيراد Bootstrap CSS
 
 // تعريف واجهة بيانات المستخدم
 interface UserData {
@@ -15,10 +14,10 @@ interface UserData {
   balance: number;
 }
 
-// قائمة المستخدمين المحظورين مع أسباب الحظر
+// قائمة المستخدمين المحظورين مع سبب الحظر
 const bannedUsers = [
-  { id: 1, username: 'Yrqr52', banReason: 'مخالفة شروط الاستخدام.' },
-  { id: 2, username: 'testuser', banReason: 'نشاط مشبوه.' },
+  { id: 1, username: 'Yrqr52', reason: 'انتهاك القواعد' },
+  { id: 2, username: 'User2', reason: 'تصرف غير لائق' },
 ];
 
 // قائمة المسؤولين بناءً على اسم المستخدم والدور
@@ -28,7 +27,7 @@ const admins = [
   { name: 'Yrqr52', role: 'Admin' }
 ];
 
-export default function Home() {
+const Home: React.FC = () => {
   const [userData, setUserData] = useState<UserData | null>(null);
   const [isMenuOpen, setIsMenuOpen] = useState(false); // لحالة القائمة
   const [isAdminModalOpen, setIsAdminModalOpen] = useState(false);
@@ -64,13 +63,10 @@ export default function Home() {
       <main className="p-4 bg-gray-900 min-h-screen flex items-center justify-center">
         <div className="text-center">
           <img src="/icon8.png" alt="Banned Icon" className="mx-auto mb-4 w-32 h-32" />
-          <div className="alert alert-info" role="alert">
+          <div className="alert alert-danger" role="alert">
             <h4 className="alert-heading">أنت محظور</h4>
-            <p>{bannedUser.banReason}</p>
-            <p className="mb-0">
-              لمزيد من المعلومات، يمكنك التواصل مع الدعم عبر
-              <a href="https://t.me/kharwaydo" className="alert-link">بوت @kharwaydo</a>.
-            </p>
+            <p>{bannedUser.reason}</p>
+            <p>للمزيد من المعلومات، يمكنك الاتصال بالمسؤول <a href="https://t.me/kharwaydo" className="alert-link">هنا</a>.</p>
           </div>
         </div>
       </main>
@@ -145,7 +141,7 @@ export default function Home() {
               Banned List
             </li>
             <li className="cursor-pointer">
-              <a href="https://t.me/your_channel" target="_blank">
+              <a href="https://t.me/your_channel" target="_blank" rel="noopener noreferrer">
                 <img
                   src="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.5.0/icons/telegram.svg"
                   alt="Telegram"
@@ -188,7 +184,7 @@ export default function Home() {
             <ul>
               {bannedUsers.map((user, index) => (
                 <li key={index} className="mb-2">
-                  {user.username || `User ID: ${user.id}`}
+                  {user.username || `User ID: ${user.id}`} - سبب الحظر: {user.reason}
                 </li>
               ))}
             </ul>
@@ -203,4 +199,6 @@ export default function Home() {
       )}
     </main>
   );
-}
+};
+
+export default Home;
