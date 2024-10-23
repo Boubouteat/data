@@ -66,9 +66,8 @@ export default function Home() {
         <div className="text-center">
           <img src="/icon8.png" alt="Banned Icon" className="mx-auto mb-4 w-32 h-32" />
           <div className="alert" role="alert" style={{ color: 'white', border: '1px solid white' }}>
-            <h4 className="alert-heading">أنت محظور</h4>
-            <p>لقد تم حظرك من الوصول إلى هذه الصفحة.</p>
-            <p>سبب الحظر: {currentUserBan?.reason}</p>
+            <h4 className="alert-heading">!لقد تم حظرك</h4>
+            <p> بسبب: {currentUserBan?.reason}</p>
             <p>للتواصل مع المسؤول، يمكنك زيارة <a href="https://t.me/kharwaydo" target="_blank" className="text-blue-500">البوت هنا</a>.</p>
           </div>
         </div>
