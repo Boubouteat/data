@@ -2,7 +2,6 @@
 
 import WebApp from '@twa-dev/sdk'
 import { useEffect, useState } from 'react'
-import { useRouter } from 'next/router'; // استيراد useRouter من Next.js
 import './styles.css'; // استيراد ملف CSS
 
 // تعريف واجهة بيانات المستخدم
@@ -36,7 +35,6 @@ export default function Home() {
   const [isMenuOpen, setIsMenuOpen] = useState(false); // لحالة القائمة
   const [isAdminModalOpen, setIsAdminModalOpen] = useState(false);
   const [isBanListModalOpen, setIsBanListModalOpen] = useState(false);
-  const router = useRouter(); // تهيئة useRouter
 
   useEffect(() => {
     if (WebApp.initDataUnsafe.user) {
@@ -62,11 +60,6 @@ export default function Home() {
 
   const toggleMenu = () => {
     setIsMenuOpen(!isMenuOpen);
-  };
-
-  // دالة الذهاب إلى صفحة المهام
-  const goToTasks = () => {
-    router.push('/task/task.tsx'); // توجيه إلى صفحة المهام
   };
 
   if (isBanned) {
@@ -208,26 +201,6 @@ export default function Home() {
           </div>
         </div>
       )}
-
-      {/* Bottom Navigation Bar */}
-      <footer className="fixed bottom-0 left-0 right-0 bg-gray-800 p-2 flex justify-around text-white">
-        <button className="flex flex-col items-center" onClick={() => router.push('/')}>
-          <img
-            src="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.5.0/icons/house.svg"
-            alt="Home"
-            className="w-6 h-6"
-          />
-          Home
-        </button>
-        <button className="flex flex-col items-center" onClick={goToTasks}>
-          <img
-            src="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.5.0/icons/check2-square.svg"
-            alt="Task"
-            className="w-6 h-6"
-          />
-          Task
-        </button>
-      </footer>
     </main>
   );
 }
