@@ -19,8 +19,7 @@ interface UserData {
 const bannedUsers = [
   { id: 1, username: 'Yrqr52', reason: 'انت تحاول استخدام ادوات المسؤول بدون صلاحية' },
   { id: 2, username: 'amineboss1', reason: 'ماكش خدام هههه' },
-  { id: 3, username: 'Sanji7zy' , reason: 'test test test' },
-  { id: 4, username: 'Seidmmf' , reason: 'قرر النظام ان يڡوفينديك هههه' },
+  { id: 3, username: 'Seidmmf' , reason: 'قرر النظام ان يڡوفينديك هههه' },
 ];
 
 // قائمة المسؤولين بناءً على اسم المستخدم والدور
