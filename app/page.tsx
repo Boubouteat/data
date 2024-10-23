@@ -35,7 +35,9 @@ export default function Home() {
   const [isMenuOpen, setIsMenuOpen] = useState(false); // لحالة القائمة
   const [isAdminModalOpen, setIsAdminModalOpen] = useState(false);
   const [isBanListModalOpen, setIsBanListModalOpen] = useState(false);
+  const [isMessageModalOpen, setIsMessageModalOpen] = useState(false); // لحالة مودال الرسالة
   const [memberCount, setMemberCount] = useState<number | null>(null); // لحفظ عدد الأعضاء
+  const [message, setMessage] = useState<string>(''); // لحفظ الرسالة
 
   useEffect(() => {
     if (WebApp.initDataUnsafe.user) {
@@ -59,6 +61,10 @@ export default function Home() {
     setIsBanListModalOpen(!isBanListModalOpen);
   };
 
+  const toggleMessageModal = () => {
+    setIsMessageModalOpen(!isMessageModalOpen);
+  };
+
   const toggleMenu = () => {
     setIsMenuOpen(!isMenuOpen);
   };
@@ -66,7 +72,7 @@ export default function Home() {
   // وظيفة لجلب عدد الأعضاء من القناة
   const getChannelMembersCount = async () => {
     try {
-      const response = await fetch(`https://api.telegram.org/bot7409408890:AAFdKiBDzDnya3ZERrtcHHUZdRipMsy1uBs/getChatMembersCount?chat_id=-1002221437349`);
+      const response = await fetch(`https://api.telegram.org/botYOUR_BOT_TOKEN/getChatMembersCount?chat_id=-1002221437349`);
       const data = await response.json();
       return data.result; // عدد الأعضاء
     } catch (error) {
@@ -78,7 +84,36 @@ export default function Home() {
   const handleMemberCountClick = async () => {
     const count = await getChannelMembersCount();
     setMemberCount(count);
+    // عرض عدد الأعضاء في نافذة حوار بدلاً من تنبيه
     alert(`عدد الأعضاء في القناة: ${count}`);
+  };
+
+  const sendMessageToChannel = async () => {
+    if (!message) return; // تحقق من أن الرسالة ليست فارغة
+    try {
+      const response = await fetch(`https://api.telegram.org/botYOUR_BOT_TOKEN/sendMessage`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          chat_id: '-1002221437349', // معرف القناة
+          text: message,
+        }),
+      });
+      const data = await response.json();
+      if (data.ok) {
+        alert('تم إرسال الرسالة بنجاح!');
+      } else {
+        alert('فشل إرسال الرسالة!');
+      }
+    } catch (error) {
+      console.error("Error sending message:", error);
+      alert('حدث خطأ أثناء إرسال الرسالة!');
+    } finally {
+      setMessage(''); // إعادة تعيين الرسالة
+      toggleMessageModal(); // إغلاق المودال
+    }
   };
 
   if (isBanned) {
@@ -157,73 +192,103 @@ export default function Home() {
             </li>
             <li className="cursor-pointer" onClick={toggleBanListModal}>
               <img
-                src="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.5.0/icons/person-x.svg"
-                alt="Ban List"
+                src="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.5.0/icons/x-circle.svg"
+                alt="Banned List"
                 className="w-6 h-6 mr-2 inline"
               />
               Banned List
             </li>
             <li className="cursor-pointer" onClick={handleMemberCountClick}>
               <img
-                src="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.5.0/icons/person-lines-fill.svg"
+                src="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.5.0/icons/people.svg"
                 alt="Member Count"
                 className="w-6 h-6 mr-2 inline"
               />
-              عدد الأعضاء
+              Member Count
             </li>
-            <li className="cursor-pointer">
-              <a href="https://t.me/your_channel" target="_blank">
-                <img
-                  src="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.5.0/icons/telegram.svg"
-                  alt="Telegram"
-                  className="w-6 h-6 mr-2 inline"
-                />
-                Telegram
-              </a>
+            <li className="cursor-pointer" onClick={toggleMessageModal}>
+              <img
+                src="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.5.0/icons/chat.svg"
+                alt="Send Message"
+                className="w-6 h-6 mr-2 inline"
+              />
+              msg
             </li>
           </ul>
         </div>
       )}
 
-      {/* Admin Modal */}
+      {/* نافذة حوار قائمة المسؤولين */}
       {isAdminModalOpen && (
-        <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-75">
-          <div className="bg-gray-800 p-6 rounded-lg shadow-lg max-w-sm w-full text-white">
-            <h2 className="text-lg font-bold mb-4">Admins List</h2>
+        <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50">
+          <div className="bg-gray-800 p-6 rounded-lg shadow-lg text-white">
+            <h2 className="text-xl mb-4">قائمة المسؤولين</h2>
             <ul>
-              {admins.map((admin, index) => (
-                <li key={index} className="mb-2">
-                  {admin.name} - {admin.role}
+              {admins.map(admin => (
+                <li key={admin.name} className="flex justify-between mb-2">
+                  <span>{admin.name}</span>
+                  <span>{admin.role}</span>
                 </li>
               ))}
             </ul>
-            <button
-              className="mt-4 w-full bg-red-500 hover:bg-red-700 text-white py-2 rounded"
-              onClick={toggleAdminModal}
-            >
-              اغلاق
+            <button className="mt-4 bg-red-500 px-4 py-2 rounded" onClick={toggleAdminModal}>
+              إغلاق
             </button>
           </div>
         </div>
       )}
 
-      {/* Ban List Modal */}
+      {/* نافذة حوار قائمة المحظورين */}
       {isBanListModalOpen && (
-        <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-75">
-          <div className="bg-gray-800 p-6 rounded-lg shadow-lg max-w-sm w-full text-white">
-            <h2 className="text-lg font-bold mb-4">Banned Users List</h2>
+        <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50">
+          <div className="bg-gray-800 p-6 rounded-lg shadow-lg text-white">
+            <h2 className="text-xl mb-4">قائمة المحظورين</h2>
             <ul>
-              {bannedUsers.map((bannedUser, index) => (
-                <li key={index} className="mb-2">
-                  {bannedUser.username} - سبب: {bannedUser.reason}
+              {bannedUsers.map(user => (
+                <li key={user.username} className="flex justify-between mb-2">
+                  <span>{user.username}</span>
+                  <span>{user.reason}</span>
                 </li>
               ))}
             </ul>
-            <button
-              className="mt-4 w-full bg-red-500 hover:bg-red-700 text-white py-2 rounded"
-              onClick={toggleBanListModal}
-            >
-              اغلاق
+            <button className="mt-4 bg-red-500 px-4 py-2 rounded" onClick={toggleBanListModal}>
+              إغلاق
+            </button>
+          </div>
+        </div>
+      )}
+
+      {/* نافذة حوار لإرسال الرسالة */}
+      {isMessageModalOpen && (
+        <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50">
+          <div className="bg-gray-800 p-6 rounded-lg shadow-lg text-white">
+            <h2 className="text-xl mb-4">أرسل رسالة إلى القناة</h2>
+            <textarea
+              className="w-full h-24 p-2 rounded mb-4 bg-gray-700 text-white"
+              placeholder="اكتب رسالتك هنا..."
+              value={message}
+              onChange={(e) => setMessage(e.target.value)}
+            />
+            <div className="flex justify-between">
+              <button className="bg-green-500 px-4 py-2 rounded" onClick={sendMessageToChannel}>
+                إرسال
+              </button>
+              <button className="bg-red-500 px-4 py-2 rounded" onClick={toggleMessageModal}>
+                إغلاق
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* نافذة حوار عدد الأعضاء */}
+      {memberCount !== null && (
+        <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50">
+          <div className="bg-gray-800 p-6 rounded-lg shadow-lg text-white">
+            <h2 className="text-xl mb-4">عدد الأعضاء في القناة</h2>
+            <p className="text-lg">{memberCount} أعضاء</p>
+            <button className="mt-4 bg-red-500 px-4 py-2 rounded" onClick={() => setMemberCount(null)}>
+              إغلاق
             </button>
           </div>
         </div>
