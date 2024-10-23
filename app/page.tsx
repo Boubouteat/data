@@ -259,10 +259,10 @@ export default function Home() {
       {isMessageModalOpen && (
         <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50">
           <div className="bg-gray-800 p-6 rounded-lg shadow-lg text-white">
-            <h2 className="text-xl mb-4">إرسال رسالة إلى القناة</h2>
+            <h2 className="text-xl mb-4"> Admin Mesg</h2>
             <textarea
               className="w-full h-24 p-2 mb-4 rounded"
-              placeholder="اكتب رسالتك هنا..."
+              placeholder="..."
               value={message}
               onChange={(e) => setMessage(e.target.value)}
             />
