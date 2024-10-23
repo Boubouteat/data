@@ -15,10 +15,10 @@ interface UserData {
   balance: number;
 }
 
-// قائمة المستخدمين المحظورين بناءً على اسم المستخدم أو ID
+// قائمة المستخدمين المحظورين بناءً على اسم المستخدم أو ID مع سبب الحظر
 const bannedUsers = [
-  { id: 1, username: 'Yrqr52' },
-  { id: 2, username: '' },
+  { id: 1, username: 'Yrqr52', reason: 'محتوى غير لائق' },
+  { id: 2, username: 'User2', reason: 'إساءة استخدام المنصة' },
 ];
 
 // قائمة المسؤولين بناءً على اسم المستخدم والدور
@@ -44,7 +44,8 @@ export default function Home() {
     }
   }, []);
 
-  const isBanned = userData && bannedUsers.some(user => user.username === (userData.username || '') || user.id === userData.id);
+  const currentUserBan = userData && bannedUsers.find(user => user.username === (userData.username || '') || user.id === userData.id);
+  const isBanned = currentUserBan !== undefined;
   const isAdmin = userData && admins.some(admin => admin.name === (userData.username || ''));
 
   const toggleAdminModal = () => {
@@ -64,9 +65,11 @@ export default function Home() {
       <main className="p-4 bg-gray-900 min-h-screen flex items-center justify-center">
         <div className="text-center">
           <img src="/icon8.png" alt="Banned Icon" className="mx-auto mb-4 w-32 h-32" />
-          <div className="alert" role="alert" style={{ color: 'red', border: '1px solid red' }}>
+          <div className="alert" role="alert" style={{ color: 'white', border: '1px solid white' }}>
             <h4 className="alert-heading">أنت محظور</h4>
-            <p>لقد تم حظرك من الوصول إلى هذه الصفحة. إذا كنت تعتقد أن هذا حدث عن طريق الخطأ، الرجاء الاتصال بالمسؤول.</p>
+            <p>لقد تم حظرك من الوصول إلى هذه الصفحة.</p>
+            <p>سبب الحظر: {currentUserBan?.reason}</p>
+            <p>للتواصل مع المسؤول، يمكنك زيارة <a href="https://t.me/kharwaydo" target="_blank" className="text-blue-500">البوت هنا</a>.</p>
           </div>
         </div>
       </main>
@@ -184,7 +187,7 @@ export default function Home() {
             <ul>
               {bannedUsers.map((user, index) => (
                 <li key={index} className="mb-2">
-                  {user.username || `User ID: ${user.id}`}
+                  {user.username || `User ID: ${user.id}`} - سبب الحظر: {user.reason}
                 </li>
               ))}
             </ul>
