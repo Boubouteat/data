@@ -19,7 +19,7 @@ interface UserData {
 const bannedUsers = [
   { id: 1, username: 'Yrqr52', reason: 'انت تحاول استخدام ادوات المسؤول بدون صلاحية' },
   { id: 2, username: 'amineboss1', reason: 'ماكش خدام هههه' },
-  { id: 3, username: 'Sanji7zy' , reason: 'ماكش خدام ههههه' },
+  { id: 3, username: '' , reason: 'ماكش خدام ههههه' },
   { id: 4, username: 'Sanji7zy' , reason: 'قرر النظام ان يڨوفينديك هههه' },
 ];
 
