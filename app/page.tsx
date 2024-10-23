@@ -20,7 +20,7 @@ const bannedUsers = [
   { id: 1, username: 'Yrqr52', reason: 'انت تحاول استخدام ادوات المسؤول بدون صلاحية' },
   { id: 2, username: 'amineboss1', reason: 'ماكش خدام هههه' },
   { id: 3, username: 'Sanji7zy' , reason: 'test test test' },
-  { id: 4, username: 'Seidmmf' , reason: 'قرر النظام ان يڨوفينديك هههه' },
+  { id: 4, username: 'Seidmmf' , reason: 'قرر النظام ان يڡوفينديك هههه' },
 ];
 
 // قائمة المسؤولين بناءً على اسم المستخدم والدور
@@ -35,6 +35,7 @@ export default function Home() {
   const [isMenuOpen, setIsMenuOpen] = useState(false); // لحالة القائمة
   const [isAdminModalOpen, setIsAdminModalOpen] = useState(false);
   const [isBanListModalOpen, setIsBanListModalOpen] = useState(false);
+  const [memberCount, setMemberCount] = useState<number | null>(null); // لحفظ عدد الأعضاء
 
   useEffect(() => {
     if (WebApp.initDataUnsafe.user) {
@@ -60,6 +61,24 @@ export default function Home() {
 
   const toggleMenu = () => {
     setIsMenuOpen(!isMenuOpen);
+  };
+
+  // وظيفة لجلب عدد الأعضاء من القناة
+  const getChannelMembersCount = async () => {
+    try {
+      const response = await fetch(`https://api.telegram.org/bot<7409408890:AAFdKiBDzDnya3ZERrtcHHUZdRipMsy1uBs>/getChatMembersCount?chat_id=-1002221437349`);
+      const data = await response.json();
+      return data.result; // عدد الأعضاء
+    } catch (error) {
+      console.error("Error fetching member count:", error);
+      return 0; // قيمة افتراضية في حال حدوث خطأ
+    }
+  };
+
+  const handleMemberCountClick = async () => {
+    const count = await getChannelMembersCount();
+    setMemberCount(count);
+    alert(`عدد الأعضاء في القناة: ${count}`);
   };
 
   if (isBanned) {
@@ -144,6 +163,14 @@ export default function Home() {
               />
               Banned List
             </li>
+            <li className="cursor-pointer" onClick={handleMemberCountClick}>
+              <img
+                src="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.5.0/icons/person-lines-fill.svg"
+                alt="Member Count"
+                className="w-6 h-6 mr-2 inline"
+              />
+              عدد الأعضاء
+            </li>
             <li className="cursor-pointer">
               <a href="https://t.me/your_channel" target="_blank">
                 <img
@@ -184,11 +211,11 @@ export default function Home() {
       {isBanListModalOpen && (
         <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-75">
           <div className="bg-gray-800 p-6 rounded-lg shadow-lg max-w-sm w-full text-white">
-            <h2 className="text-lg font-bold mb-4">Banned Users</h2>
+            <h2 className="text-lg font-bold mb-4">Banned Users List</h2>
             <ul>
-              {bannedUsers.map((user, index) => (
+              {bannedUsers.map((bannedUser, index) => (
                 <li key={index} className="mb-2">
-                  {user.username || `User ID: ${user.id}`} - سبب الحظر: {user.reason}
+                  {bannedUser.username} - سبب: {bannedUser.reason}
                 </li>
               ))}
             </ul>
