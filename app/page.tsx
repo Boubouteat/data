@@ -1,7 +1,8 @@
-import React, { useEffect, useState } from 'react';
-import WebApp from '@twa-dev/sdk';
+'use client'
+
+import WebApp from '@twa-dev/sdk'
+import { useEffect, useState } from 'react'
 import './styles.css'; // استيراد ملف CSS
-import 'bootstrap/dist/css/bootstrap.min.css'; // استيراد Bootstrap CSS
 
 // تعريف واجهة بيانات المستخدم
 interface UserData {
@@ -14,10 +15,10 @@ interface UserData {
   balance: number;
 }
 
-// قائمة المستخدمين المحظورين مع سبب الحظر
+// قائمة المستخدمين المحظورين بناءً على اسم المستخدم أو ID
 const bannedUsers = [
-  { id: 1, username: 'Yrqr52', reason: 'انتهاك القواعد' },
-  { id: 2, username: 'User2', reason: 'تصرف غير لائق' },
+  { id: 1, username: 'Yrqr52' },
+  { id: 2, username: '' },
 ];
 
 // قائمة المسؤولين بناءً على اسم المستخدم والدور
@@ -27,7 +28,7 @@ const admins = [
   { name: 'Yrqr52', role: 'Admin' }
 ];
 
-const Home: React.FC = () => {
+export default function Home() {
   const [userData, setUserData] = useState<UserData | null>(null);
   const [isMenuOpen, setIsMenuOpen] = useState(false); // لحالة القائمة
   const [isAdminModalOpen, setIsAdminModalOpen] = useState(false);
@@ -43,7 +44,7 @@ const Home: React.FC = () => {
     }
   }, []);
 
-  const bannedUser = userData && bannedUsers.find(user => user.username === (userData.username || '') || user.id === userData.id);
+  const isBanned = userData && bannedUsers.some(user => user.username === (userData.username || '') || user.id === userData.id);
   const isAdmin = userData && admins.some(admin => admin.name === (userData.username || ''));
 
   const toggleAdminModal = () => {
@@ -58,15 +59,14 @@ const Home: React.FC = () => {
     setIsMenuOpen(!isMenuOpen);
   };
 
-  if (bannedUser) {
+  if (isBanned) {
     return (
       <main className="p-4 bg-gray-900 min-h-screen flex items-center justify-center">
         <div className="text-center">
           <img src="/icon8.png" alt="Banned Icon" className="mx-auto mb-4 w-32 h-32" />
-          <div className="alert alert-danger" role="alert">
+          <div className="alert" role="alert" style={{ color: 'red', border: '1px solid red' }}>
             <h4 className="alert-heading">أنت محظور</h4>
-            <p>{bannedUser.reason}</p>
-            <p>للمزيد من المعلومات، يمكنك الاتصال بالمسؤول <a href="https://t.me/kharwaydo" className="alert-link">هنا</a>.</p>
+            <p>لقد تم حظرك من الوصول إلى هذه الصفحة. إذا كنت تعتقد أن هذا حدث عن طريق الخطأ، الرجاء الاتصال بالمسؤول.</p>
           </div>
         </div>
       </main>
@@ -141,7 +141,7 @@ const Home: React.FC = () => {
               Banned List
             </li>
             <li className="cursor-pointer">
-              <a href="https://t.me/your_channel" target="_blank" rel="noopener noreferrer">
+              <a href="https://t.me/your_channel" target="_blank">
                 <img
                   src="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.5.0/icons/telegram.svg"
                   alt="Telegram"
@@ -184,7 +184,7 @@ const Home: React.FC = () => {
             <ul>
               {bannedUsers.map((user, index) => (
                 <li key={index} className="mb-2">
-                  {user.username || `User ID: ${user.id}`} - سبب الحظر: {user.reason}
+                  {user.username || `User ID: ${user.id}`}
                 </li>
               ))}
             </ul>
@@ -199,6 +199,4 @@ const Home: React.FC = () => {
       )}
     </main>
   );
-};
-
-export default Home;
+}
