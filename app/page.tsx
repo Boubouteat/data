@@ -1,7 +1,7 @@
-'use client';
+'use client'
 
-import WebApp from '@twa-dev/sdk';
-import { useEffect, useState } from 'react';
+import WebApp from '@twa-dev/sdk'
+import { useEffect, useState } from 'react'
 import './styles.css'; // استيراد ملف CSS
 
 // تعريف واجهة بيانات المستخدم
@@ -19,25 +19,22 @@ interface UserData {
 const bannedUsers = [
   { id: 1, username: 'Yrqr52', reason: 'انت تحاول استخدام ادوات المسؤول بدون صلاحية' },
   { id: 2, username: 'amineboss1', reason: 'ماكش خدام هههه' },
-  { id: 3, username: 'Sanji7zy', reason: 'test test test' },
-  { id: 4, username: 'Seidmmf', reason: 'قرر النظام ان يڨوفينديك هههه' },
+  { id: 3, username: 'Sanji7zy' , reason: 'test test test' },
+  { id: 4, username: 'Seidmmf' , reason: 'قرر النظام ان يڨوفينديك هههه' },
 ];
 
 // قائمة المسؤولين بناءً على اسم المستخدم والدور
 const admins = [
   { name: 'Kharwaydo', role: 'Super Admin' },
   { name: 'amineboss1', role: 'Admin' },
-  { name: 'Yrqr52', role: 'Admin' },
+  { name: 'Yrqr52', role: 'Admin' }
 ];
 
 export default function Home() {
   const [userData, setUserData] = useState<UserData | null>(null);
-  const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [isMenuOpen, setIsMenuOpen] = useState(false); // لحالة القائمة
   const [isAdminModalOpen, setIsAdminModalOpen] = useState(false);
   const [isBanListModalOpen, setIsBanListModalOpen] = useState(false);
-  const [isFarming, setIsFarming] = useState(false);
-  const [timeLeft, setTimeLeft] = useState(0);
-  const [intervalId, setIntervalId] = useState<NodeJS.Timeout | null>(null);
 
   useEffect(() => {
     if (WebApp.initDataUnsafe.user) {
@@ -63,34 +60,6 @@ export default function Home() {
 
   const toggleMenu = () => {
     setIsMenuOpen(!isMenuOpen);
-  };
-
-  const startFarming = () => {
-    setIsFarming(true);
-    setTimeLeft(7 * 60 * 60); // 7 ساعات بالثواني
-    const id = setInterval(() => {
-      setTimeLeft(prev => {
-        if (prev <= 0) {
-          clearInterval(id);
-          setIsFarming(false);
-          return 0;
-        }
-        return prev - 1;
-      });
-    }, 1000);
-    setIntervalId(id);
-  };
-
-  const claimPoints = () => {
-    if (userData) {
-      setUserData({ ...userData, balance: userData.balance + 50 }); // إضافة 50 نقطة
-      setIsFarming(false);
-      setTimeLeft(0);
-      if (intervalId) {
-        clearInterval(intervalId); // إيقاف العد التنازلي
-        setIntervalId(null);
-      }
-    }
   };
 
   if (isBanned) {
@@ -141,36 +110,6 @@ export default function Home() {
         <div className="text-white">Loading...</div>
       )}
 
-      {/* زر بدء الزراعة */}
-      <div className="flex flex-col items-center mt-16">
-        <img
-          src="/farming.gif" // استبدل بمسار الصورة المتحركة
-          alt="Farming GIF"
-          className={`w-64 h-64 mb-4 ${isFarming ? 'animate' : ''}`}
-          style={{ display: isFarming ? 'block' : 'none' }}
-        />
-        {!isFarming ? (
-          <button
-            className="bg-blue-500 text-white px-4 py-2 rounded"
-            onClick={startFarming}
-          >
-            Start Farming
-          </button>
-        ) : (
-          <div className="text-white">
-            <p>وقت الزراعة المتبقي: {Math.floor(timeLeft / 3600)}:{Math.floor((timeLeft % 3600) / 60).toString().padStart(2, '0')}:{(timeLeft % 60).toString().padStart(2, '0')}</p>
-            {timeLeft <= 0 && (
-              <button
-                className="bg-green-500 text-white px-4 py-2 rounded mt-2"
-                onClick={claimPoints}
-              >
-                Claim
-              </button>
-            )}
-          </div>
-        )}
-      </div>
-
       {/* Menu Icon (تظهر فقط للمسؤولين) */}
       {isAdmin && (
         <div className="fixed top-4 right-4 space-x-2 flex">
@@ -208,11 +147,11 @@ export default function Home() {
             <li className="cursor-pointer">
               <a href="https://t.me/your_channel" target="_blank">
                 <img
-                  src="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.5.0/icons/chat-left-dots.svg"
-                  alt="Chat"
+                  src="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.5.0/icons/telegram.svg"
+                  alt="Telegram"
                   className="w-6 h-6 mr-2 inline"
                 />
-                Contact Support
+                Telegram
               </a>
             </li>
           </ul>
@@ -221,21 +160,21 @@ export default function Home() {
 
       {/* Admin Modal */}
       {isAdminModalOpen && (
-        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
-          <div className="bg-white p-4 rounded-lg shadow-lg">
-            <h2 className="text-lg font-bold mb-2">Admin List</h2>
+        <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-75">
+          <div className="bg-gray-800 p-6 rounded-lg shadow-lg max-w-sm w-full text-white">
+            <h2 className="text-lg font-bold mb-4">Admins List</h2>
             <ul>
               {admins.map((admin, index) => (
-                <li key={index} className="py-2">
+                <li key={index} className="mb-2">
                   {admin.name} - {admin.role}
                 </li>
               ))}
             </ul>
             <button
-              className="bg-red-500 text-white px-4 py-2 rounded mt-4"
+              className="mt-4 w-full bg-red-500 hover:bg-red-700 text-white py-2 rounded"
               onClick={toggleAdminModal}
             >
-              Close
+              اغلاق
             </button>
           </div>
         </div>
@@ -243,21 +182,21 @@ export default function Home() {
 
       {/* Ban List Modal */}
       {isBanListModalOpen && (
-        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
-          <div className="bg-white p-4 rounded-lg shadow-lg">
-            <h2 className="text-lg font-bold mb-2">Banned Users</h2>
+        <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-75">
+          <div className="bg-gray-800 p-6 rounded-lg shadow-lg max-w-sm w-full text-white">
+            <h2 className="text-lg font-bold mb-4">Banned Users</h2>
             <ul>
-              {bannedUsers.map((bannedUser, index) => (
-                <li key={index} className="py-2">
-                  {bannedUser.username} - {bannedUser.reason}
+              {bannedUsers.map((user, index) => (
+                <li key={index} className="mb-2">
+                  {user.username || `User ID: ${user.id}`} - سبب الحظر: {user.reason}
                 </li>
               ))}
             </ul>
             <button
-              className="bg-red-500 text-white px-4 py-2 rounded mt-4"
+              className="mt-4 w-full bg-red-500 hover:bg-red-700 text-white py-2 rounded"
               onClick={toggleBanListModal}
             >
-              Close
+              اغلاق
             </button>
           </div>
         </div>
